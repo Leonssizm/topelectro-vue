@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar">
+  <nav>
     <div class="flex">
       <a href="#" class="flex space-x-4 px-4 py-10">
         <svg
