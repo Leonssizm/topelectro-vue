@@ -6,4 +6,5 @@ import AdminSidebar from "../components/layouts/admin/Sidebar.vue";
 <template>
   <AdminHeader />
   <AdminSidebar />
+  <!-- <RouterView /> -->
 </template>
