@@ -127,9 +127,13 @@
                     <td
                       class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium"
                     >
-                      <a class="text-green-500 hover:text-green-700" href="#">
+                      <button
+                        type="button"
+                        class="text-green-500 hover:text-green-700"
+                        @click="editCategory(category.id)"
+                      >
                         Edit
-                      </a>
+                      </button>
                     </td>
                     <td
                       class="whitespace-nowrap px-6 py-4 text-right text-sm font-medium"
@@ -151,6 +155,46 @@
       </div>
     </div>
   </div>
+  <!-- Edit form popup -->
+  <div class="invisible" id="editCategoryModal">
+    <div class="w-84 flex flex-col rounded border bg-green-100">
+      <div class="mb-4 px-2">
+        <label class="blocktext-sm mb-1">Category Name:</label>
+        <input
+          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
+          type="text"
+          autofocus
+          placeholder="Category"
+          v-model="categoryName"
+        />
+      </div>
+      <div class="mb-4 px-2">
+        <label class="mb-1 block text-sm">Description:</label>
+        <input
+          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
+          type="text"
+          autofocus
+          placeholder="Description"
+          v-model="categoryDescription"
+        />
+      </div>
+      <div class="flex justify-around">
+        <button
+          class="rounded bg-green-500 py-2 px-3 font-bold text-white hover:bg-green-700"
+          type="button"
+        >
+          Add
+        </button>
+        <button
+          type="button"
+          class="rounded bg-red-500 py-2 px-3 font-bold text-white hover:bg-red-700"
+          @click="closeAddCategoryModal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -159,6 +203,8 @@ export default {
   data() {
     return {
       categories: [],
+      categoryDescription: "",
+      categoryName: "",
     };
   },
   mounted() {
@@ -178,6 +224,21 @@ export default {
         }
       });
     },
+    editCategory(id) {
+      this.categoryName = document
+        .getElementById(id)
+        .children.item(0)
+        .children.item(2).innerHTML;
+
+      document
+        .getElementById("editCategoryModal")
+        .classList.remove("invisible");
+      document.getElementById("editCategoryModal").classList.add("visible");
+    },
+    closeAddCategoryModal() {
+      document.getElementById("editCategoryModal").classList.remove("visible");
+      document.getElementById("editCategoryModal").classList.add("invisible");
+    },
   },
   provide() {
     return {
@@ -186,3 +247,20 @@ export default {
   },
 };
 </script>
+
+<style>
+.invisible {
+  display: none;
+}
+.visible {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+}
+</style>
