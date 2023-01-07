@@ -5,6 +5,6 @@ import AdminLayout from "./layouts/AdminLayout.vue";
 
 <template>
   <AdminLayout />
-  <RouterView class="flex justify-center" />
+  <!-- <RouterView class="flex justify-center" /> -->
   <!-- NOTE: using routerview in adminLayout renders view in adminlayout -->
 </template>

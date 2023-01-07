@@ -1,3 +1,3 @@
 <template>
-  <div>Comments</div>
+  <h1>Comments</h1>
 </template>
