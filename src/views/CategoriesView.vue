@@ -1,12 +1,12 @@
 <template>
-  <div class="ml-36">
+  <div class="ml-16">
     <div class="ml-6 flex">
       <div class="mt-8 flex text-xl">
         <h1>Categories</h1>
       </div>
     </div>
     <!-- Table -->
-    <div class="mt-6">
+    <div class="mt-6 box-border overflow-auto">
       <div class="flex flex-col">
         <div class="overflow-x-auto">
           <div class="flex justify-between py-3 pl-2">
@@ -40,6 +40,7 @@
             <div class="flex text-sm">
               <button
                 class="rounded bg-blue-500 py-2 px-3 font-bold text-white hover:bg-blue-700"
+                @click="addCategory()"
               >
                 Add Category
               </button>
@@ -48,7 +49,7 @@
 
           <div class="inline-block w-full p-1.5 align-middle">
             <div class="overflow-hidden rounded-lg border">
-              <table class="min-w-full divide-y divide-gray-200">
+              <table class="table-fixed divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                   <tr>
                     <th scope="col" class="py-3 pl-4">
@@ -184,12 +185,50 @@
           type="button"
           @click="sendEditedCategoryInfo()"
         >
-          Add
+          Save Changes
         </button>
         <button
           type="button"
           class="rounded bg-red-500 py-2 px-3 font-bold text-white hover:bg-red-700"
           @click="closeAddCategoryModal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- UNDER CONSTRUCTION -->
+  <!-- Add Category form Popup -->
+  <div class="invisible">
+    <div class="flex w-1/4 flex-col rounded border bg-green-100">
+      <div class="mb-4 px-2">
+        <label class="blocktext-sm mb-1">Category Name:</label>
+        <input
+          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
+          type="text"
+          autofocus
+          placeholder="Category"
+        />
+      </div>
+      <div class="mb-4 px-2">
+        <label class="mb-1 block text-sm">Description:</label>
+        <textarea
+          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
+          type="text"
+          autofocus
+          placeholder="Description"
+        ></textarea>
+      </div>
+      <div class="mb-2 flex justify-around">
+        <button
+          class="rounded bg-green-500 py-2 px-3 font-bold text-white hover:bg-green-700"
+          type="button"
+        >
+          Add
+        </button>
+        <button
+          type="button"
+          class="rounded bg-red-500 py-2 px-3 font-bold text-white hover:bg-red-700"
         >
           Close
         </button>
@@ -217,6 +256,9 @@ export default {
       });
   },
   methods: {
+    addCategory() {
+      console.log("HELLO");
+    },
     deleteCategory(id) {
       fetch(`http://127.0.0.1:8000/api/categories/${id}`, {
         method: "DELETE",
@@ -272,6 +314,7 @@ export default {
             .children.item(0)
             .children.item(3).innerHTML = data.description;
         }
+        this.closeAddCategoryModal();
       });
     },
     closeAddCategoryModal() {
