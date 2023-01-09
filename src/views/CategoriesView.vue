@@ -40,7 +40,7 @@
             <div class="flex text-sm">
               <button
                 class="rounded bg-blue-500 py-2 px-3 font-bold text-white hover:bg-blue-700"
-                @click="addCategory()"
+                @click="openAddCategory()"
               >
                 Add Category
               </button>
@@ -190,16 +190,15 @@
         <button
           type="button"
           class="rounded bg-red-500 py-2 px-3 font-bold text-white hover:bg-red-700"
-          @click="closeAddCategoryModal"
+          @click="closeEditCategoryModal"
         >
           Close
         </button>
       </div>
     </div>
   </div>
-  <!-- UNDER CONSTRUCTION -->
   <!-- Add Category form Popup -->
-  <div class="invisible">
+  <div class="invisible" id="addCategoryModal">
     <div class="flex w-1/4 flex-col rounded border bg-green-100">
       <div class="mb-4 px-2">
         <label class="blocktext-sm mb-1">Category Name:</label>
@@ -208,6 +207,7 @@
           type="text"
           autofocus
           placeholder="Category"
+          v-model="newCategoryName"
         />
       </div>
       <div class="mb-4 px-2">
@@ -217,18 +217,21 @@
           type="text"
           autofocus
           placeholder="Description"
+          v-model="newCategoryDescription"
         ></textarea>
       </div>
       <div class="mb-2 flex justify-around">
         <button
           class="rounded bg-green-500 py-2 px-3 font-bold text-white hover:bg-green-700"
           type="button"
+          @click="createNewCategory"
         >
           Add
         </button>
         <button
           type="button"
           class="rounded bg-red-500 py-2 px-3 font-bold text-white hover:bg-red-700"
+          @click="closeAddCategoryModal()"
         >
           Close
         </button>
@@ -239,13 +242,14 @@
 
 <script>
 export default {
-  props: ["id", "title", "body"],
   data() {
     return {
       categories: [],
       categoryDescription: "",
       categoryName: "",
       categoryId: "",
+      newCategoryDescription: "",
+      newCategoryName: "",
     };
   },
   mounted() {
@@ -256,9 +260,6 @@ export default {
       });
   },
   methods: {
-    addCategory() {
-      console.log("HELLO");
-    },
     deleteCategory(id) {
       fetch(`http://127.0.0.1:8000/api/categories/${id}`, {
         method: "DELETE",
@@ -314,18 +315,46 @@ export default {
             .children.item(0)
             .children.item(3).innerHTML = data.description;
         }
-        this.closeAddCategoryModal();
+        this.closeEditCategoryModal();
       });
     },
-    closeAddCategoryModal() {
+    closeEditCategoryModal() {
       document.getElementById("editCategoryModal").classList.remove("visible");
       document.getElementById("editCategoryModal").classList.add("invisible");
     },
-  },
-  provide() {
-    return {
-      categories: this.categories,
-    };
+    // new category
+    openAddCategory() {
+      document.getElementById("addCategoryModal").classList.remove("invisible");
+      document.getElementById("addCategoryModal").classList.add("visible");
+    },
+    createNewCategory() {
+      fetch("http://127.0.0.1:8000/api/categories", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: this.newCategoryName,
+          description: this.newCategoryDescription,
+        }),
+      }).then((res) => {
+        res.json();
+        if (res.status == 201) {
+          fetch("http://127.0.0.1:8000/api/categories")
+            .then((response) => response.json())
+            .then((categories) => {
+              this.categories = categories;
+            });
+          this.closeAddCategoryModal();
+        } else {
+          alert(["something went wrong, try again", "error:" + res.status]);
+        }
+      });
+    },
+    closeAddCategoryModal() {
+      document.getElementById("addCategoryModal").classList.remove("visible");
+      document.getElementById("addCategoryModal").classList.add("invisible");
+    },
   },
 };
 </script>
