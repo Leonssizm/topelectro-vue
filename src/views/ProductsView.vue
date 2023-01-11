@@ -155,7 +155,7 @@
                       <td
                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
                       >
-                        {{ product.categoryName }}
+                        {{ product.categoryName.join(", ") }}
                       </td>
                       <td
                         class="whitespace-nowrap px-6 py-4 text-center text-sm font-medium"
@@ -192,7 +192,6 @@
                         <button
                           type="button"
                           class="text-green-500 hover:text-green-700"
-                          @click="category"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
