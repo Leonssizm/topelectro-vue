@@ -212,6 +212,7 @@
 
                       <td
                         class="whitespace-nowrap px-6 py-4 text-center text-sm font-medium"
+                        @click="deleteProduct(product.id)"
                       >
                         <button
                           type="button"
@@ -281,6 +282,16 @@ export default {
         });
       });
   },
-  methods: {},
+  methods: {
+    deleteProduct(id){
+      fetch(`http://127.0.0.1:8000/api/products/${id}`, {
+        method: "DELETE",
+      }).then((res) => {
+        if (res.status == 204) {
+          document.getElementById(`${id}`).remove();
+        }
+      });
+    }
+  },
 };
 </script>
