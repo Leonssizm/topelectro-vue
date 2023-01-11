@@ -155,7 +155,7 @@
                       <td
                         class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
                       >
-                        Category
+                        {{ product.categoryName }}
                       </td>
                       <td
                         class="whitespace-nowrap px-6 py-4 text-center text-sm font-medium"
@@ -163,6 +163,7 @@
                         <button
                           type="button"
                           class="text-gray-500 hover:text-gray-700"
+                          @click="view"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -191,6 +192,7 @@
                         <button
                           type="button"
                           class="text-green-500 hover:text-green-700"
+                          @click="category"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -245,10 +247,14 @@
 </template>
 
 <script>
+// import { isProxy, toRaw } from "vue";
 export default {
   data() {
     return {
       products: [],
+      categories: [],
+      pivotData: [],
+      categoryNames: [],
     };
   },
   mounted() {
@@ -256,7 +262,26 @@ export default {
       .then((response) => response.json())
       .then((products) => {
         this.products = products;
+      })
+      .finally(() => {
+        this.products.forEach((product) => {
+          product.categoryName = [];
+          this.categories.push(product.categories);
+        });
+        this.categories.forEach((category) => {
+          category.forEach((item) => {
+            this.pivotData.push([item.pivot, item.name]);
+          });
+        });
+        this.pivotData.forEach((data) => {
+          this.products.forEach((product) => {
+            if (data[0].product_id == product.id) {
+              product.categoryName.push(data[1]);
+            }
+          });
+        });
       });
   },
+  methods: {},
 };
 </script>
