@@ -192,6 +192,7 @@
                         <button
                           type="button"
                           class="text-green-500 hover:text-green-700"
+                          @click="editProduct(product.id)"
                         >
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -244,6 +245,79 @@
       </div>
     </div>
   </div>
+  <!-- Edit product form popup -->
+  <div class="invisible" id="editProductModal">
+    <div class="flex w-1/3 flex-col rounded border bg-green-100">
+      <div class="mt-5 flex justify-around">
+        <div class="mb-4 px-2">
+          <label class="mb-1 block text-sm">Product Name:</label>
+          <input
+            class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
+            type="text"
+            autofocus
+            placeholder="Name"
+            v-model="productName"
+          />
+        </div>
+        <div class="mb-4 px-2">
+          <label class="mb-1 block text-sm">SQ:</label>
+          <input
+            class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
+            type="text"
+            autofocus
+            placeholder="SQ"
+            v-model="sq"
+          />
+        </div>
+      </div>
+      <div class="flex justify-around">
+        <div class="mb-4 px-2">
+          <label class="mb-1 block text-sm">Price:</label>
+          <input
+            class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
+            type="text"
+            autofocus
+            placeholder="Price"
+            v-model="price"
+          />
+        </div>
+        <div class="mb-4 px-2">
+          <label class="mb-1 block text-sm">Wholesale Price:</label>
+          <input
+            class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
+            type="text"
+            autofocus
+            placeholder="Wholesale Price"
+            v-model="wholesalePrice"
+          />
+        </div>
+      </div>
+      <div class="mb-4 px-2">
+        <div class="flex flex-col items-center">
+          <label class="mb-1 block text-sm">Image:</label>
+          <input
+            type="file"
+            class="text-grey-500 text-sm file:mr-5 file:rounded-full file:border-0 file:bg-blue-50 file:py-2 file:px-6 file:text-sm file:font-medium file:text-blue-700 hover:file:cursor-pointer hover:file:bg-amber-50 hover:file:text-amber-700"
+          />
+        </div>
+      </div>
+      <div class="mb-2 flex justify-around">
+        <button
+          class="rounded bg-green-500 py-2 px-3 font-bold text-white hover:bg-green-700"
+          type="button"
+        >
+          Save Changes
+        </button>
+        <button
+          type="button"
+          class="rounded bg-red-500 py-2 px-3 font-bold text-white hover:bg-red-700"
+          @click="closeEditProductModal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -255,6 +329,10 @@ export default {
       categories: [],
       pivotData: [],
       categoryNames: [],
+      productName: "",
+      price: "",
+      sq: "",
+      wholesalePrice: "",
     };
   },
   mounted() {
@@ -283,7 +361,7 @@ export default {
       });
   },
   methods: {
-    deleteProduct(id){
+    deleteProduct(id) {
       fetch(`http://127.0.0.1:8000/api/products/${id}`, {
         method: "DELETE",
       }).then((res) => {
@@ -291,7 +369,50 @@ export default {
           document.getElementById(`${id}`).remove();
         }
       });
-    }
+    },
+    editProduct(id) {
+      // when opening edit category modal, current values are displayed
+      this.sq = document
+        .getElementById(id)
+        .children.item(0)
+        .children.item(1).innerHTML;
+      this.productName = document
+        .getElementById(id)
+        .children.item(0)
+        .children.item(2).innerHTML;
+      this.price = document
+        .getElementById(id)
+        .children.item(0)
+        .children.item(3).innerHTML;
+      this.wholesalePrice = document
+        .getElementById(id)
+        .children.item(0)
+        .children.item(4).innerHTML;
+      // Open Modal
+      document.getElementById("editProductModal").classList.remove("invisible");
+      document.getElementById("editProductModal").classList.add("visible");
+    },
+    closeEditProductModal() {
+      document.getElementById("editProductModal").classList.remove("visible");
+      document.getElementById("editProductModal").classList.add("invisible");
+    },
   },
 };
 </script>
+
+<style>
+.invisible {
+  display: none;
+}
+.visible {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.8);
+}
+</style>
