@@ -1,192 +1,28 @@
 <template>
-  <div class="ml-16">
-    <div class="ml-6 flex">
-      <div class="mt-8 flex text-xl">
-        <h1>Categories</h1>
-      </div>
-    </div>
-    <!-- Table -->
-    <div class="mt-6 box-border overflow-auto">
-      <div class="flex flex-col">
-        <div class="overflow-x-auto">
-          <div class="flex justify-between py-3 pl-2">
-            <div class="relative max-w-xs">
-              <label for="hs-table-search" class="sr-only"> Search </label>
-              <input
-                type="text"
-                name="search"
-                class="block w-full rounded-md border-gray-200 p-3 pl-10 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-                placeholder="Search..."
-              />
-              <div
-                class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5 text-gray-400"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div class="flex text-sm">
-              <button
-                class="rounded bg-blue-500 py-2 px-3 font-bold text-white hover:bg-blue-700"
-                @click="openAddCategory()"
-              >
-                Add Category
-              </button>
-            </div>
-          </div>
-
-          <div class="inline-block w-full p-1.5 align-middle">
-            <div class="overflow-hidden rounded-lg border">
-              <table class="table-fixed divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th scope="col" class="py-3 pl-4">
-                      <div class="flex h-5 items-center">
-                        <input
-                          id="checkbox-all"
-                          type="checkbox"
-                          class="rounded border-gray-200 text-blue-600 focus:ring-blue-500"
-                        />
-                        <label for="checkbox" class="sr-only"> Checkbox </label>
-                      </div>
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-6 py-3 text-left text-xs font-bold uppercase text-gray-500"
-                    >
-                      ID
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-6 py-3 text-left text-xs font-bold uppercase text-gray-500"
-                    >
-                      Category Name
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-6 py-3 text-left text-xs font-bold uppercase text-gray-500"
-                    >
-                      Description
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-6 py-3 text-right text-xs font-bold uppercase text-gray-500"
-                    >
-                      Edit
-                    </th>
-                    <th
-                      scope="col"
-                      class="px-6 py-3 text-right text-xs font-bold uppercase text-gray-500"
-                    >
-                      Delete
-                    </th>
-                  </tr>
-                </thead>
-                <tbody
-                  class="divide-y divide-gray-200"
-                  v-for="category in categories"
-                  :id="category.id"
-                  :key="category.id"
-                >
-                  <tr>
-                    <td class="py-3 pl-4">
-                      <div class="flex h-5 items-center">
-                        <input
-                          type="checkbox"
-                          class="rounded border-gray-200 text-blue-600 focus:ring-blue-500"
-                        />
-                        <label for="checkbox" class="sr-only"> Checkbox </label>
-                      </div>
-                    </td>
-                    <td
-                      class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-800"
-                    >
-                      {{ category.id }}
-                    </td>
-                    <td
-                      class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
-                    >
-                      {{ category.name }}
-                    </td>
-                    <td
-                      class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
-                    >
-                      {{ category.description }}
-                    </td>
-                    <td
-                      class="whitespace-nowrap px-6 py-4 text-center text-sm font-medium"
-                    >
-                      <button
-                        type="button"
-                        class="text-green-500 hover:text-green-700"
-                        @click="editCategory(category.id)"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="h-6 w-6"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
-                          />
-                        </svg>
-                      </button>
-                    </td>
-                    <td
-                      class="whitespace-nowrap px-6 py-4 text-center text-sm font-medium"
-                    >
-                      <button
-                        type="button"
-                        class="text-red-500 hover:text-red-700"
-                        @click="deleteCategory(category.id)"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke-width="1.5"
-                          stroke="currentColor"
-                          class="h-6 w-6"
-                        >
-                          <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
-                          />
-                        </svg>
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+  <div class="ml-2">
+    <ResourceHeader header="Categories" />
+    <div class="flex-col">
+      <div class="flex justify-between py-3 pl-2">
+        <SearchInput />
+        <div class="flex text-sm">
+          <button
+            class="rounded bg-blue-500 py-2 px-3 font-bold text-white hover:bg-blue-700"
+            @click="openAddCategory()"
+          >
+            Add Category
+          </button>
         </div>
       </div>
     </div>
+
+    <!-- Table -->
+    <CategoriesTable />
   </div>
   <!-- Edit form popup -->
   <div class="invisible" id="editCategoryModal">
     <div class="flex w-1/4 flex-col rounded border bg-green-100">
       <div class="mb-4 px-2">
-        <label class="blocktext-sm mb-1">Category Name:</label>
+        <label class="mb-1 block text-sm">Category Name:</label>
         <input
           class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
           type="text"
@@ -227,7 +63,7 @@
   <div class="invisible" id="addCategoryModal">
     <div class="flex w-1/4 flex-col rounded border bg-green-100">
       <div class="mb-4 px-2">
-        <label class="blocktext-sm mb-1">Category Name:</label>
+        <label class="mb-1 block text-sm">Category Name:</label>
         <input
           class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
           type="text"
@@ -267,7 +103,17 @@
 </template>
 
 <script>
+// TODO: global Use setup scripts and composition api\
+
+import SearchInput from "../components/ui/SearchInput.vue";
+import CategoriesTable from "../components/categories/CategoriesTable.vue";
+import ResourceHeader from "../components/shared/ResourceHeader.vue";
 export default {
+  components: {
+    CategoriesTable,
+    ResourceHeader,
+    SearchInput,
+  },
   data() {
     return {
       categories: [],
@@ -287,6 +133,7 @@ export default {
   },
   methods: {
     deleteCategory(id) {
+      // TODO: global - Axios
       fetch(`http://127.0.0.1:8000/api/categories/${id}`, {
         method: "DELETE",
       }).then((res) => {
