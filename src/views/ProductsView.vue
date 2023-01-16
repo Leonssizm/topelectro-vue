@@ -7,26 +7,9 @@
         <div class="flex flex-col">
           <div class="overflow-x-auto">
             <div class="flex justify-between py-3 pl-2">
-              <div class="relative max-w-xs">
-                <label for="hs-table-search" class="sr-only"> Search </label>
-                <input
-                  type="text"
-                  name="search"
-                  class="block w-full rounded-md border-gray-200 p-3 pl-10 text-sm focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-                  placeholder="Search..."
-                />
-                <div
-                  class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4"
-                >
-                  <IconSearch />
-                </div>
-              </div>
+              <SearchInput />
               <div class="flex text-sm">
-                <button
-                  class="rounded bg-blue-500 py-2 px-3 font-bold text-white hover:bg-blue-700"
-                >
-                  Add Product
-                </button>
+                <PrimaryButton content="Add Product" />
               </div>
             </div>
 
@@ -310,19 +293,21 @@
 </template>
 
 <script>
-import IconSearch from "../components/icons/IconSearch.vue";
 import IconEdit from "../components/icons/IconEdit.vue";
 import IconDelete from "../components/icons/IconDelete.vue";
 import IconDetails from "../components/icons/IconDetails.vue";
 import ResourceHeader from "../components/shared/ResourceHeader.vue";
+import PrimaryButton from "../components/ui/buttons/PrimaryButton.vue";
+import SearchInput from "../components/ui/inputs/SearchInput.vue";
 
 export default {
   components: {
-    IconSearch,
+    SearchInput,
     IconEdit,
     IconDelete,
     IconDetails,
     ResourceHeader,
+    PrimaryButton,
   },
   data() {
     return {

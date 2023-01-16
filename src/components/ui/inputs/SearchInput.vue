@@ -16,8 +16,10 @@
 </template>
 
 <script scoped>
-import IconSearch from "../icons/IconSearch.vue";
+import IconSearch from "@/components/icons/IconSearch.vue";
 export default {
-  components: [IconSearch],
+  components: {
+    IconSearch,
+  },
 };
 </script>

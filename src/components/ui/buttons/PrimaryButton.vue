@@ -1,7 +1,6 @@
 <template>
   <button
-    class="rounded bg-green-500 py-2 px-3 font-bold text-white hover:bg-green-700"
-    type="button"
+    class="rounded bg-blue-500 py-2 px-3 font-bold text-white hover:bg-blue-700"
   >
     {{ content }}
   </button>

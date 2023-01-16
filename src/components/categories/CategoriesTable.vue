@@ -112,15 +112,52 @@
       </div>
     </div>
   </div>
+  <!-- Edit Category Modal -->
+  <div class="invisible" id="editCategoryModal">
+    <div class="flex w-1/4 flex-col rounded border bg-green-100">
+      <div class="mb-4 px-2">
+        <label class="mb-1 block text-sm">Category Name:</label>
+        <input
+          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
+          type="text"
+          autofocus
+          placeholder="Category"
+          v-model="categoryName"
+        />
+      </div>
+      <div class="mb-4 px-2">
+        <label class="mb-1 block text-sm">Description:</label>
+        <textarea
+          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
+          type="text"
+          autofocus
+          placeholder="Description"
+          v-model="categoryDescription"
+        ></textarea>
+      </div>
+      <div class="mb-2 flex justify-around">
+        <SuccessButton
+          @click="sendEditedCategoryInfo()"
+          content="Save Changes"
+        />
+        <WarningButton @click="closeEditCategoryModal" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script scoped>
+import axios from "@/plugins/axios/index.js";
 import IconEdit from "../icons/IconEdit.vue";
 import IconDelete from "../icons/IconDelete.vue";
+import WarningButton from "../ui/buttons/WarningButton.vue";
+import SuccessButton from "../ui/buttons/SuccessButton.vue";
 export default {
   components: {
     IconEdit,
     IconDelete,
+    WarningButton,
+    SuccessButton,
   },
   data() {
     return {
@@ -133,20 +170,15 @@ export default {
     };
   },
   mounted() {
-    fetch("http://127.0.0.1:8000/api/categories")
-      .then((response) => response.json())
-      .then((categories) => {
-        this.categories = categories;
-      });
+    axios.get("categories").then((categories) => {
+      this.categories = categories.data;
+    });
   },
   methods: {
     deleteCategory(id) {
-      // TODO: global - Axios
-      fetch(`http://127.0.0.1:8000/api/categories/${id}`, {
-        method: "DELETE",
-      }).then((res) => {
+      axios.delete(`categories/${id}`).then((res) => {
         if (res.status == 204) {
-          document.getElementById(`${id}`).remove();
+          document.getElementById(id).remove();
         }
       });
     },
@@ -170,6 +202,35 @@ export default {
         .getElementById("editCategoryModal")
         .classList.remove("invisible");
       document.getElementById("editCategoryModal").classList.add("visible");
+    },
+    sendEditedCategoryInfo() {
+      const data = {
+        name: this.categoryName,
+        description: this.categoryDescription,
+      };
+
+      axios
+        .put(`categories/${this.categoryId}`, {
+          name: data.name,
+          description: data.description,
+        })
+        .then((res) => {
+          if (res.status == 204) {
+            document
+              .getElementById(this.categoryId)
+              .children.item(0)
+              .children.item(2).innerHTML = data.name;
+            document
+              .getElementById(this.categoryId)
+              .children.item(0)
+              .children.item(3).innerHTML = data.description;
+          }
+          this.closeEditCategoryModal();
+        });
+    },
+    closeEditCategoryModal() {
+      document.getElementById("editCategoryModal").classList.remove("visible");
+      document.getElementById("editCategoryModal").classList.add("invisible");
     },
   },
 };
