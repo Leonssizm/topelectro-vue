@@ -14,7 +14,7 @@
     <CategoriesTable :key="componentKey" />
   </div>
   <!-- Add Category form Popup -->
-  <div class="invisible" id="addCategoryModal">
+  <div v-if="visibleModal" class="visible">
     <div class="flex w-1/4 flex-col rounded border bg-green-100">
       <div class="mb-4 px-2">
         <label class="mb-1 block text-sm">Category Name:</label>
@@ -47,13 +47,13 @@
 <script>
 // TODO: global Use setup scripts and composition api\
 import axios from "@/plugins/axios/index.js";
-import "../assets/main.css";
-import SearchInput from "../components/ui/inputs/SearchInput.vue";
-import CategoriesTable from "../components/categories/CategoriesTable.vue";
-import ResourceHeader from "../components/shared/ResourceHeader.vue";
-import WarningButton from "../components/ui/buttons/WarningButton.vue";
-import SuccessButton from "../components/ui/buttons/SuccessButton.vue";
-import PrimaryButton from "../components/ui/buttons/PrimaryButton.vue";
+import "@/assets/main.css";
+import SearchInput from "@/components/ui/inputs/SearchInput.vue";
+import CategoriesTable from "@/components/categories/CategoriesTable.vue";
+import ResourceHeader from "@/components/shared/ResourceHeader.vue";
+import WarningButton from "@/components/ui/buttons/WarningButton.vue";
+import SuccessButton from "@/components/ui/buttons/SuccessButton.vue";
+import PrimaryButton from "@/components/ui/buttons/PrimaryButton.vue";
 
 export default {
   components: {
@@ -69,12 +69,12 @@ export default {
       componentKey: 0,
       newCategoryDescription: "",
       newCategoryName: "",
+      visibleModal: false,
     };
   },
   methods: {
     openAddCategory() {
-      document.getElementById("addCategoryModal").classList.remove("invisible");
-      document.getElementById("addCategoryModal").classList.add("visible");
+      this.visibleModal = true;
     },
     createNewCategory() {
       axios
@@ -92,8 +92,7 @@ export default {
         });
     },
     closeAddCategoryModal() {
-      document.getElementById("addCategoryModal").classList.remove("visible");
-      document.getElementById("addCategoryModal").classList.add("invisible");
+      this.visibleModal = false;
     },
     forceRerender() {
       this.componentKey += 1;

@@ -52,7 +52,7 @@
                 </thead>
                 <tbody
                   class="divide-y divide-gray-200"
-                  v-for="category in categories"
+                  v-for="(category, index) in categories"
                   :id="category.id"
                   :key="category.id"
                 >
@@ -98,7 +98,7 @@
                       <button
                         type="button"
                         class="text-red-500 hover:text-red-700"
-                        @click="deleteCategory(category.id)"
+                        @click="deleteCategory(category.id, index)"
                       >
                         <IconDelete />
                       </button>
@@ -113,7 +113,7 @@
     </div>
   </div>
   <!-- Edit Category Modal -->
-  <div class="invisible" id="editCategoryModal">
+  <div v-if="visibleModal" class="visible">
     <div class="flex w-1/4 flex-col rounded border bg-green-100">
       <div class="mb-4 px-2">
         <label class="mb-1 block text-sm">Category Name:</label>
@@ -146,13 +146,13 @@
   </div>
 </template>
 
-<script scoped>
+<script>
 import axios from "@/plugins/axios/index.js";
 import "@/assets/main.css";
-import IconEdit from "../icons/IconEdit.vue";
-import IconDelete from "../icons/IconDelete.vue";
-import WarningButton from "../ui/buttons/WarningButton.vue";
-import SuccessButton from "../ui/buttons/SuccessButton.vue";
+import IconEdit from "@/components/icons/IconEdit.vue";
+import IconDelete from "@/components/icons/IconDelete.vue";
+import WarningButton from "@/components/ui/buttons/WarningButton.vue";
+import SuccessButton from "@/components/ui/buttons/SuccessButton.vue";
 export default {
   components: {
     IconEdit,
@@ -168,6 +168,7 @@ export default {
       categoryId: "",
       newCategoryDescription: "",
       newCategoryName: "",
+      visibleModal: false,
     };
   },
   mounted() {
@@ -176,62 +177,37 @@ export default {
     });
   },
   methods: {
-    deleteCategory(id) {
-      axios.delete(`categories/${id}`).then((res) => {
-        if (res.status == 204) {
-          document.getElementById(id).remove();
-        }
+    deleteCategory(id, index) {
+      axios.delete(`categories/${id}`).then(() => {
+        this.categories.splice(index, 1);
       });
     },
     editCategory(id) {
-      this.categoryId = document
-        .getElementById(id)
-        .children.item(0)
-        .children.item(1).innerHTML;
-
-      this.categoryName = document
-        .getElementById(id)
-        .children.item(0)
-        .children.item(2).innerHTML;
-
-      this.categoryDescription = document
-        .getElementById(id)
-        .children.item(0)
-        .children.item(3).innerHTML;
-
-      document
-        .getElementById("editCategoryModal")
-        .classList.remove("invisible");
-      document.getElementById("editCategoryModal").classList.add("visible");
+      this.categoryId = id;
+      const category = this.categories.filter((item) => item.id == id);
+      this.categoryName = category[0].name;
+      this.categoryDescription = category[0].description;
+      this.visibleModal = true;
     },
     sendEditedCategoryInfo() {
-      const data = {
-        name: this.categoryName,
-        description: this.categoryDescription,
-      };
-
       axios
         .put(`categories/${this.categoryId}`, {
-          name: data.name,
-          description: data.description,
+          name: this.categoryName,
+          description: this.categoryDescription,
         })
         .then((res) => {
           if (res.status == 204) {
-            document
-              .getElementById(this.categoryId)
-              .children.item(0)
-              .children.item(2).innerHTML = data.name;
-            document
-              .getElementById(this.categoryId)
-              .children.item(0)
-              .children.item(3).innerHTML = data.description;
+            const category = this.categories.filter(
+              (item) => item.id == this.categoryId
+            );
+            category[0].name = this.categoryName;
+            category[0].description = this.categoryDescription;
           }
           this.closeEditCategoryModal();
         });
     },
     closeEditCategoryModal() {
-      document.getElementById("editCategoryModal").classList.remove("visible");
-      document.getElementById("editCategoryModal").classList.add("invisible");
+      this.visibleModal = false;
     },
   },
 };
