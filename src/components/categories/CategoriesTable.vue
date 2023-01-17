@@ -148,6 +148,7 @@
 
 <script scoped>
 import axios from "@/plugins/axios/index.js";
+import "@/assets/main.css";
 import IconEdit from "../icons/IconEdit.vue";
 import IconDelete from "../icons/IconDelete.vue";
 import WarningButton from "../ui/buttons/WarningButton.vue";
@@ -235,20 +236,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.invisible {
-  display: none;
-}
-.visible {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.8);
-}
-</style>

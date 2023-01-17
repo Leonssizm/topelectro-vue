@@ -47,6 +47,7 @@
 <script>
 // TODO: global Use setup scripts and composition api\
 import axios from "@/plugins/axios/index.js";
+import "../assets/main.css";
 import SearchInput from "../components/ui/inputs/SearchInput.vue";
 import CategoriesTable from "../components/categories/CategoriesTable.vue";
 import ResourceHeader from "../components/shared/ResourceHeader.vue";
@@ -66,16 +67,11 @@ export default {
   data() {
     return {
       componentKey: 0,
-      categories: [],
-      categoryDescription: "",
-      categoryName: "",
-      categoryId: "",
       newCategoryDescription: "",
       newCategoryName: "",
     };
   },
   methods: {
-    // new category
     openAddCategory() {
       document.getElementById("addCategoryModal").classList.remove("invisible");
       document.getElementById("addCategoryModal").classList.add("visible");
@@ -105,20 +101,3 @@ export default {
   },
 };
 </script>
-
-<style>
-.invisible {
-  display: none;
-}
-.visible {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(0, 0, 0, 0.8);
-}
-</style>
