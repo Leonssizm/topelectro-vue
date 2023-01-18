@@ -13,6 +13,7 @@
     <!-- Table -->
     <CategoriesTable :key="componentKey" />
   </div>
+
   <!-- Add Category form Popup -->
   <div v-if="visibleModal" class="visible">
     <div class="flex w-1/4 flex-col rounded border bg-green-100">

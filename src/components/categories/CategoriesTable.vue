@@ -113,52 +113,21 @@
     </div>
   </div>
   <!-- Edit Category Modal -->
-  <div v-if="visibleModal" class="visible">
-    <div class="flex w-1/4 flex-col rounded border bg-green-100">
-      <div class="mb-4 px-2">
-        <label class="mb-1 block text-sm">Category Name:</label>
-        <input
-          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-          type="text"
-          autofocus
-          placeholder="Category"
-          v-model="categoryName"
-        />
-      </div>
-      <div class="mb-4 px-2">
-        <label class="mb-1 block text-sm">Description:</label>
-        <textarea
-          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-          type="text"
-          autofocus
-          placeholder="Description"
-          v-model="categoryDescription"
-        ></textarea>
-      </div>
-      <div class="mb-2 flex justify-around">
-        <SuccessButton
-          @click="sendEditedCategoryInfo()"
-          content="Save Changes"
-        />
-        <WarningButton @click="closeEditCategoryModal" />
-      </div>
-    </div>
-  </div>
+  <CategoriesEditModal v-if="visibleModal" />
 </template>
 
 <script>
+import { computed } from "vue";
 import axios from "@/plugins/axios/index.js";
 import "@/assets/main.css";
 import IconEdit from "@/components/icons/IconEdit.vue";
 import IconDelete from "@/components/icons/IconDelete.vue";
-import WarningButton from "@/components/ui/buttons/WarningButton.vue";
-import SuccessButton from "@/components/ui/buttons/SuccessButton.vue";
+import CategoriesEditModal from "@/components/categories/CategoriesEditModal.vue";
 export default {
   components: {
     IconEdit,
     IconDelete,
-    WarningButton,
-    SuccessButton,
+    CategoriesEditModal,
   },
   data() {
     return {
@@ -169,6 +138,14 @@ export default {
       newCategoryDescription: "",
       newCategoryName: "",
       visibleModal: false,
+    };
+  },
+  provide() {
+    return {
+      name: computed(() => this.categoryName),
+      description: computed(() => this.categoryDescription),
+      id: computed(() => this.categoryId),
+      visibleModal: computed(() => this.visibleModal),
     };
   },
   mounted() {
@@ -188,23 +165,6 @@ export default {
       this.categoryName = category[0].name;
       this.categoryDescription = category[0].description;
       this.visibleModal = true;
-    },
-    sendEditedCategoryInfo() {
-      axios
-        .put(`categories/${this.categoryId}`, {
-          name: this.categoryName,
-          description: this.categoryDescription,
-        })
-        .then((res) => {
-          if (res.status == 204) {
-            const category = this.categories.filter(
-              (item) => item.id == this.categoryId
-            );
-            category[0].name = this.categoryName;
-            category[0].description = this.categoryDescription;
-          }
-          this.closeEditCategoryModal();
-        });
     },
     closeEditCategoryModal() {
       this.visibleModal = false;
