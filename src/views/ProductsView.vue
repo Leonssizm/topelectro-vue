@@ -297,7 +297,7 @@ import IconEdit from "../components/icons/IconEdit.vue";
 import IconDelete from "../components/icons/IconDelete.vue";
 import IconDetails from "../components/icons/IconDetails.vue";
 import ResourceHeader from "../components/shared/ResourceHeader.vue";
-import PrimaryButton from "../components/ui/buttons/PrimaryButton.vue";
+import ButtonSuccess from "@/components/ui/buttons/ButtonSuccess.vue";
 import SearchInput from "../components/ui/inputs/SearchInput.vue";
 
 export default {
@@ -307,7 +307,7 @@ export default {
     IconDelete,
     IconDetails,
     ResourceHeader,
-    PrimaryButton,
+    ButtonSuccess,
   },
   data() {
     return {

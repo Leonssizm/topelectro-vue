@@ -1,48 +1,38 @@
 <template>
   <div class="ml-2">
     <ResourceHeader header="Categories" />
+
+    <!-- TODO (not now): calke gaitane mere -->
     <div class="flex-col">
       <div class="flex justify-between py-3 pl-2">
         <SearchInput />
         <div class="flex text-sm">
-          <PrimaryButton @click="openAddCategory()" content="Add Category" />
+          <ButtonPrimary
+            @click="this.showAddModal = true"
+            content="Add Category"
+          />
         </div>
       </div>
     </div>
 
-    <!-- Table -->
-    <CategoriesTable :key="componentKey" />
+    <CategoriesTable
+      :categories="this.categories"
+      @openEditCategoryModal="openEditCategoryModal"
+      @deleteCategory="deleteCategory"
+    />
   </div>
 
-  <!-- Add Category form Popup -->
-  <div v-if="visibleModal" class="visible">
-    <div class="flex w-1/4 flex-col rounded border bg-green-100">
-      <div class="mb-4 px-2">
-        <label class="mb-1 block text-sm">Category Name:</label>
-        <input
-          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-          type="text"
-          autofocus
-          placeholder="Category"
-          v-model="newCategoryName"
-        />
-      </div>
-      <div class="mb-4 px-2">
-        <label class="mb-1 block text-sm">Description:</label>
-        <textarea
-          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-          type="text"
-          autofocus
-          placeholder="Description"
-          v-model="newCategoryDescription"
-        ></textarea>
-      </div>
-      <div class="mb-2 flex justify-around">
-        <SuccessButton @click="createNewCategory" content="Add" />
-        <WarningButton @click="closeAddCategoryModal()" />
-      </div>
-    </div>
-  </div>
+  <CategoriesModalAdd
+    @closeAddModal="this.showAddModal = false"
+    @createNewCategory="createNewCategory"
+    v-if="showAddModal"
+  />
+
+  <CategoriesModalEdit
+    @closeEditModal="this.showEditModal = false"
+    @updateCategory="handleUpdateCategory"
+    v-if="showEditModal"
+  />
 </template>
 
 <script>
@@ -51,53 +41,87 @@ import axios from "@/plugins/axios/index.js";
 import "@/assets/main.css";
 import SearchInput from "@/components/ui/inputs/SearchInput.vue";
 import CategoriesTable from "@/components/categories/CategoriesTable.vue";
+import CategoriesModalEdit from "@/components/categories/CategoriesModalEdit.vue";
+import CategoriesModalAdd from "@/components/categories/CategoriesModalAdd.vue";
 import ResourceHeader from "@/components/shared/ResourceHeader.vue";
-import WarningButton from "@/components/ui/buttons/WarningButton.vue";
-import SuccessButton from "@/components/ui/buttons/SuccessButton.vue";
-import PrimaryButton from "@/components/ui/buttons/PrimaryButton.vue";
+import { computed } from "vue";
+import ButtonPrimary from "@/components/ui/buttons/ButtonPrimary.vue";
+import { useCategoriesStore } from "@/stores/CategoriesStore.js";
 
 export default {
   components: {
     CategoriesTable,
     ResourceHeader,
     SearchInput,
-    WarningButton,
-    SuccessButton,
-    PrimaryButton,
+    CategoriesModalEdit,
+    CategoriesModalAdd,
+    ButtonPrimary,
   },
   data() {
     return {
-      componentKey: 0,
-      newCategoryDescription: "",
-      newCategoryName: "",
-      visibleModal: false,
+      categories: [],
+      categoryDescription: "",
+      categoryName: "",
+      categoryId: "",
+      showAddModal: false,
+      showEditModal: false,
+    };
+  },
+  provide() {
+    return {
+      name: computed(() => this.categoryName),
+      description: computed(() => this.categoryDescription),
+      id: computed(() => this.categoryId),
     };
   },
   methods: {
-    openAddCategory() {
-      this.visibleModal = true;
-    },
-    createNewCategory() {
+    createNewCategory(category) {
       axios
         .post("categories", {
-          name: this.newCategoryName,
-          description: this.newCategoryDescription,
+          name: category.name,
+          description: category.description,
         })
-        .then((res) => {
-          if (res.status == 201) {
-            this.closeAddCategoryModal();
-            this.forceRerender();
-          } else {
-            alert(["something went wrong, try again", "error:" + res.status]);
-          }
+        .then((response) => {
+          this.closeAddCategoryModal();
+          this.categories.push(response.data);
+        })
+        .catch((response) => {
+          alert([
+            "something went wrong, try again",
+            "error:" + response.status,
+          ]);
         });
     },
     closeAddCategoryModal() {
-      this.visibleModal = false;
+      this.showAddModal = false;
     },
-    forceRerender() {
-      this.componentKey += 1;
+    deleteCategory(id) {
+      axios.delete(`categories/${id}`).then(() => {
+        this.categories = this.categories.filter(
+          (category) => category.id != id
+        );
+      });
     },
+    openEditCategoryModal(id) {
+      this.categoryId = id;
+      const category = this.categories.filter((item) => item.id == id);
+      this.categoryName = category[0].name;
+      this.categoryDescription = category[0].description;
+      this.showEditModal = true;
+    },
+    handleUpdateCategory(category) {
+      const index = this.categories.findIndex((item) => item.id == category.id);
+      this.categories[index] = category;
+    },
+  },
+  mounted() {
+    axios.get("categories").then((categories) => {
+      this.categories = categories.data;
+    });
+  },
+  setup() {
+    const store = useCategoriesStore();
+    store.getCategories();
   },
 };
 </script>

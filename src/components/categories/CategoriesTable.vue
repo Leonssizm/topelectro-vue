@@ -52,7 +52,7 @@
                 </thead>
                 <tbody
                   class="divide-y divide-gray-200"
-                  v-for="(category, index) in categories"
+                  v-for="category in categories"
                   :id="category.id"
                   :key="category.id"
                 >
@@ -87,7 +87,7 @@
                       <button
                         type="button"
                         class="text-green-500 hover:text-green-700"
-                        @click="editCategory(category.id)"
+                        @click="$emit('openEditCategoryModal', category.id)"
                       >
                         <IconEdit />
                       </button>
@@ -98,7 +98,7 @@
                       <button
                         type="button"
                         class="text-red-500 hover:text-red-700"
-                        @click="deleteCategory(category.id, index)"
+                        @click="$emit('deleteCategory', category.id)"
                       >
                         <IconDelete />
                       </button>
@@ -112,63 +112,18 @@
       </div>
     </div>
   </div>
-  <!-- Edit Category Modal -->
-  <CategoriesEditModal v-if="visibleModal" />
 </template>
 
 <script>
-import { computed } from "vue";
-import axios from "@/plugins/axios/index.js";
-import "@/assets/main.css";
 import IconEdit from "@/components/icons/IconEdit.vue";
 import IconDelete from "@/components/icons/IconDelete.vue";
-import CategoriesEditModal from "@/components/categories/CategoriesEditModal.vue";
+import "@/assets/main.css";
+
 export default {
+  props: ["categories"],
   components: {
     IconEdit,
     IconDelete,
-    CategoriesEditModal,
-  },
-  data() {
-    return {
-      categories: [],
-      categoryDescription: "",
-      categoryName: "",
-      categoryId: "",
-      newCategoryDescription: "",
-      newCategoryName: "",
-      visibleModal: false,
-    };
-  },
-  provide() {
-    return {
-      name: computed(() => this.categoryName),
-      description: computed(() => this.categoryDescription),
-      id: computed(() => this.categoryId),
-      visibleModal: computed(() => this.visibleModal),
-    };
-  },
-  mounted() {
-    axios.get("categories").then((categories) => {
-      this.categories = categories.data;
-    });
-  },
-  methods: {
-    deleteCategory(id, index) {
-      axios.delete(`categories/${id}`).then(() => {
-        this.categories.splice(index, 1);
-      });
-    },
-    editCategory(id) {
-      this.categoryId = id;
-      const category = this.categories.filter((item) => item.id == id);
-      this.categoryName = category[0].name;
-      this.categoryDescription = category[0].description;
-      this.visibleModal = true;
-    },
-    closeEditCategoryModal() {
-      this.visibleModal = false;
-    },
   },
 };
 </script>

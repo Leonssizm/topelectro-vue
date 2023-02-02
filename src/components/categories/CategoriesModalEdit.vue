@@ -20,8 +20,8 @@
         ></textarea>
       </div>
       <div class="mb-2 flex justify-around">
-        <SuccessButton content="Save Changes" @click="sendEditedCategoryInfo" />
-        <WarningButton />
+        <ButtonSuccess content="Save Changes" @click="sendEditedCategoryInfo" />
+        <ButtonWarning @click="$emit('closeEditModal')" />
       </div>
     </div>
   </div>
@@ -29,21 +29,20 @@
 
 <script>
 import axios from "@/plugins/axios/index.js";
-import WarningButton from "@/components/ui/buttons/WarningButton.vue";
-import SuccessButton from "@/components/ui/buttons/SuccessButton.vue";
+import ButtonWarning from "@/components/ui/buttons/ButtonWarning.vue";
+import ButtonSuccess from "@/components/ui/buttons/ButtonSuccess.vue";
 export default {
   components: {
-    WarningButton,
-    SuccessButton,
+    ButtonWarning,
+    ButtonSuccess,
   },
-  inject: ["name", "description", "id", "visibleModal"],
+  inject: ["name", "description", "id"],
   data() {
     return {
       categories: [],
       categoryName: this.name,
       categoryDescription: this.description,
       categoryId: this.id,
-      modal: this.visibleModal,
     };
   },
   mounted() {
@@ -53,14 +52,16 @@ export default {
   },
   methods: {
     sendEditedCategoryInfo() {
-      axios
-        .put(`categories/${this.categoryId}`, {
-          name: this.categoryName,
-          description: this.categoryDescription,
-        })
-        .then(() => {
-          this.modal = false;
-        });
+      // editCategory
+      const category = {
+        id: this.categoryId,
+        name: this.categoryName,
+        description: this.categoryDescription,
+      };
+      axios.put(`categories/${this.categoryId}`, category).then(() => {
+        this.$emit("closeEditModal");
+        this.$emit("updateCategory", category);
+      });
     },
   },
 };
