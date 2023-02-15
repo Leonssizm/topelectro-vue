@@ -46,7 +46,8 @@ import CategoriesModalAdd from "@/components/categories/CategoriesModalAdd.vue";
 import ResourceHeader from "@/components/shared/ResourceHeader.vue";
 import { computed } from "vue";
 import ButtonPrimary from "@/components/ui/buttons/ButtonPrimary.vue";
-import { useCategoriesStore } from "@/stores/CategoriesStore.js";
+import { useCategoriesStore } from "@/stores/useCategoriesStore";
+import { storeToRefs } from "pinia";
 
 export default {
   components: {
@@ -115,13 +116,23 @@ export default {
     },
   },
   mounted() {
-    axios.get("categories").then((categories) => {
-      this.categories = categories.data;
+    // axios.get("categories").then((categories) => {
+    //   this.categories = categories.data;
+    // });
+    axios.get("categories").then((response) => {
+      const categories = response.data;
+      useCategoriesStore().initCategories(categories);
+      this.categories = useCategoriesStore().list;
     });
   },
+
   setup() {
     const store = useCategoriesStore();
-    store.getCategories();
+    const { list } = storeToRefs(store);
+    return {
+      store,
+      list,
+    };
   },
 };
 </script>
