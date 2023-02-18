@@ -8,7 +8,7 @@
           type="text"
           autofocus
           placeholder="Category"
-          v-model="name"
+          v-model="category.name"
         />
       </div>
 
@@ -19,40 +19,46 @@
           type="text"
           autofocus
           placeholder="Description"
-          v-model="description"
+          v-model="category.description"
         ></textarea>
       </div>
 
+      <h1>{{ category.description }}</h1>
+
       <div class="mb-2 flex justify-around">
-        <ButtonSuccess
-          @click="
-            $emit('createNewCategory', {
-              name: this.name,
-              description: this.description,
-            })
-          "
-          content="Add"
-        />
+        <ButtonSuccess @click="createNewCategory" content="Add" />
         <ButtonWarning @click="$emit('closeAddModal')" />
       </div>
     </div>
   </div>
 </template>
 
-<script>
+<script setup>
 import ButtonWarning from "@/components/ui/buttons/ButtonWarning.vue";
 import ButtonSuccess from "@/components/ui/buttons/ButtonSuccess.vue";
+import axios from "@/plugins/axios/index.js";
+import { useCategoriesStore } from "@/stores/useCategoriesStore";
 
-export default {
-  components: {
-    ButtonWarning,
-    ButtonSuccess,
-  },
-  data() {
-    return {
-      description: "",
-      name: "",
-    };
-  },
+const emit = defineEmits(["closeAddModal"]);
+
+const categoriesStore = useCategoriesStore();
+
+const category = {
+  name: "",
+  description: "",
 };
+
+function createNewCategory() {
+  axios
+    .post("categories", category)
+    .then((response) => {
+      console.log(category);
+      categoriesStore.addCategory(response.data);
+    })
+    .catch(() => {
+      console.log("ERROR");
+    });
+
+  emit("closeAddModal");
+}
 </script>

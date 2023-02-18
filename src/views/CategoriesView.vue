@@ -16,7 +16,6 @@
     </div>
 
     <CategoriesTable
-      :categories="this.categories"
       @openEditCategoryModal="openEditCategoryModal"
       @deleteCategory="deleteCategory"
     />
@@ -24,7 +23,6 @@
 
   <CategoriesModalAdd
     @closeAddModal="this.showAddModal = false"
-    @createNewCategory="createNewCategory"
     v-if="showAddModal"
   />
 
@@ -76,23 +74,6 @@ export default {
     };
   },
   methods: {
-    createNewCategory(category) {
-      axios
-        .post("categories", {
-          name: category.name,
-          description: category.description,
-        })
-        .then((response) => {
-          this.closeAddCategoryModal();
-          this.categories.push(response.data);
-        })
-        .catch((response) => {
-          alert([
-            "something went wrong, try again",
-            "error:" + response.status,
-          ]);
-        });
-    },
     closeAddCategoryModal() {
       this.showAddModal = false;
     },
@@ -105,24 +86,22 @@ export default {
     },
     openEditCategoryModal(id) {
       this.categoryId = id;
-      const category = this.categories.filter((item) => item.id == id);
+      const category = this.store.list.filter((item) => item.id == id);
       this.categoryName = category[0].name;
       this.categoryDescription = category[0].description;
       this.showEditModal = true;
     },
     handleUpdateCategory(category) {
-      const index = this.categories.findIndex((item) => item.id == category.id);
-      this.categories[index] = category;
+      console.log(category);
+      // const index = this.store.list.findIndex((item) => item.id == category.id);
+      // this.this.store.list[index] = category;
+      this.store.updateCategory(category);
     },
   },
   mounted() {
-    // axios.get("categories").then((categories) => {
-    //   this.categories = categories.data;
-    // });
     axios.get("categories").then((response) => {
       const categories = response.data;
-      useCategoriesStore().initCategories(categories);
-      this.categories = useCategoriesStore().list;
+      this.store.setCategories(categories);
     });
   },
 

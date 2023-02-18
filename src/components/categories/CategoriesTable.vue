@@ -52,7 +52,7 @@
                 </thead>
                 <tbody
                   class="divide-y divide-gray-200"
-                  v-for="category in categories"
+                  v-for="category in categoriesStore.list"
                   :id="category.id"
                   :key="category.id"
                 >
@@ -114,16 +114,11 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import IconEdit from "@/components/icons/IconEdit.vue";
 import IconDelete from "@/components/icons/IconDelete.vue";
+import { useCategoriesStore } from "@/stores/useCategoriesStore";
 import "@/assets/main.css";
 
-export default {
-  props: ["categories"],
-  components: {
-    IconEdit,
-    IconDelete,
-  },
-};
+const categoriesStore = useCategoriesStore();
 </script>
