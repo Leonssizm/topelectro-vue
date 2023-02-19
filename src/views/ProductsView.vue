@@ -6,6 +6,9 @@
       <div class="mt-6 box-border overflow-auto">
         <div class="flex flex-col">
           <div class="overflow-x-auto">
+            <div class="mt-3 border-indigo-500 py-3 pl-5 hover:border-l-4">
+              <p>Total of {{ this.store.getQuantity }} Products</p>
+            </div>
             <div class="flex justify-between py-3 pl-2">
               <SearchInput />
               <div class="flex text-sm">
@@ -82,7 +85,7 @@
                     </tr>
                   </thead>
                   <tbody
-                    v-for="product in products"
+                    v-for="product in this.store.list"
                     :id="product.id"
                     :key="product.id"
                     class="divide-y divide-gray-200"
@@ -297,8 +300,13 @@ import IconEdit from "../components/icons/IconEdit.vue";
 import IconDelete from "../components/icons/IconDelete.vue";
 import IconDetails from "../components/icons/IconDetails.vue";
 import ResourceHeader from "../components/shared/ResourceHeader.vue";
-import ButtonSuccess from "@/components/ui/buttons/ButtonSuccess.vue";
+// import ButtonSuccess from "@/components/ui/buttons/ButtonSuccess.vue";
 import SearchInput from "../components/ui/inputs/SearchInput.vue";
+
+import axios from "@/plugins/axios/index.js";
+
+import { useProductsStore } from "@/stores/useProductsStore";
+import { storeToRefs } from "pinia";
 
 export default {
   components: {
@@ -307,7 +315,6 @@ export default {
     IconDelete,
     IconDetails,
     ResourceHeader,
-    ButtonSuccess,
   },
   data() {
     return {
@@ -333,26 +340,26 @@ export default {
     fetch("http://127.0.0.1:8000/api/products")
       .then((response) => response.json())
       .then((products) => {
-        this.products = products;
-      })
-      .finally(() => {
-        this.products.forEach((product) => {
-          product.categoryName = [];
-          this.categories.push(product.categories);
-        });
-        this.categories.forEach((category) => {
-          category.forEach((item) => {
-            this.pivotData.push([item.pivot, item.name]);
-          });
-        });
-        this.pivotData.forEach((data) => {
-          this.products.forEach((product) => {
-            if (data[0].product_id == product.id) {
-              product.categoryName.push(data[1]);
-            }
-          });
-        });
+        this.store.list = products;
       });
+    // .finally(() => {
+    //   this.store.list.forEach((product) => {
+    //     this.store.list.categoryName = [];
+    //     this.categories.push(product.categoryName);
+    //   });
+    //   this.categories.forEach((category) => {
+    //     category.forEach((item) => {
+    //       this.pivotData.push([item.pivot, item.name]);
+    //     });
+    //   });
+    //   this.pivotData.forEach((data) => {
+    //     this.products.forEach((product) => {
+    //       if (data[0].product_id == product.id) {
+    //         product.categoryName.push(data[1]);
+    //       }
+    //     });
+    //   });
+    // });
     // Get categories for editing Product
     const categorySelectionElement =
       document.getElementById("categorySelection");
@@ -368,12 +375,8 @@ export default {
   },
   methods: {
     deleteProduct(id) {
-      fetch(`http://127.0.0.1:8000/api/products/${id}`, {
-        method: "DELETE",
-      }).then((res) => {
-        if (res.status == 204) {
-          document.getElementById(`${id}`).remove();
-        }
+      axios.delete(`products/${id}`).then(() => {
+        this.store.deleteProduct(id);
       });
     },
     editProduct() {
@@ -455,6 +458,14 @@ export default {
       this.selectedCategoriesArr.push(selectedCategoryName);
       this.selectedCategoryId.push(selectedCategoryId);
     },
+  },
+  setup() {
+    const store = useProductsStore();
+    const { list } = storeToRefs(store);
+    return {
+      store,
+      list,
+    };
   },
 };
 </script>

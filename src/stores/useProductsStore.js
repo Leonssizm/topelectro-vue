@@ -4,8 +4,17 @@ export const useProductsStore = defineStore("products", {
     list: [],
   }),
   actions: {
-    initProducts(products) {
+    setProducts(products) {
       this.list = products;
+    },
+
+    deleteProduct(id) {
+      this.list = this.list.filter((product) => product.id != id);
+    },
+  },
+  getters: {
+    getQuantity() {
+      return this.list.length;
     },
   },
 });
