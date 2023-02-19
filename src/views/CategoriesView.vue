@@ -4,6 +4,9 @@
 
     <!-- TODO (not now): calke gaitane mere -->
     <div class="flex-col">
+      <div class="mt-3 border-indigo-500 py-3 pl-5 hover:border-l-4">
+        <p>Total of {{ this.store.getQuantity }} Categories</p>
+      </div>
       <div class="flex justify-between py-3 pl-2">
         <SearchInput />
         <div class="flex text-sm">
@@ -14,7 +17,6 @@
         </div>
       </div>
     </div>
-
     <CategoriesTable
       @openEditCategoryModal="openEditCategoryModal"
       @deleteCategory="deleteCategory"
@@ -79,9 +81,7 @@ export default {
     },
     deleteCategory(id) {
       axios.delete(`categories/${id}`).then(() => {
-        this.categories = this.categories.filter(
-          (category) => category.id != id
-        );
+        this.store.deleteCategory(id);
       });
     },
     openEditCategoryModal(id) {

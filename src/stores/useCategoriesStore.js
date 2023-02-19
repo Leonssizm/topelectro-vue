@@ -17,12 +17,12 @@ export const useCategoriesStore = defineStore("categories", {
       this.list[index] = category;
     },
     deleteCategory(id) {
-      // COMING SOON
+      this.list = this.list.filter((category) => category.id != id);
     },
   },
   getters: {
     getQuantity() {
-      // COMING SOON
+      return this.list.length;
     },
   },
 });
