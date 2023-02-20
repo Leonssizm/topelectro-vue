@@ -12,159 +12,11 @@
             <div class="flex justify-between py-3 pl-2">
               <SearchInput />
               <div class="flex text-sm">
-                <PrimaryButton content="Add Product" />
-              </div>
-            </div>
-
-            <div class="inline-block w-full p-1.5 align-middle">
-              <div class="overflow-hidden rounded-lg border">
-                <table class="table-fixed divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-bold uppercase text-gray-500"
-                      >
-                        ID
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-bold uppercase text-gray-500"
-                      >
-                        SQ
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-bold uppercase text-gray-500"
-                      >
-                        Name
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-bold uppercase text-gray-500"
-                      >
-                        Price
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-bold uppercase text-gray-500"
-                      >
-                        Wholesale_price
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-bold uppercase text-gray-500"
-                      >
-                        Main image
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-left text-xs font-bold uppercase text-gray-500"
-                      >
-                        Categories
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-right text-xs font-bold uppercase text-gray-500"
-                      >
-                        Details
-                      </th>
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-right text-xs font-bold uppercase text-gray-500"
-                      >
-                        Edit
-                      </th>
-
-                      <th
-                        scope="col"
-                        class="px-6 py-3 text-right text-xs font-bold uppercase text-gray-500"
-                      >
-                        Delete
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody
-                    v-for="product in this.store.list"
-                    :id="product.id"
-                    :key="product.id"
-                    class="divide-y divide-gray-200"
-                  >
-                    <tr>
-                      <td
-                        class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-800"
-                      >
-                        {{ product.id }}
-                      </td>
-                      <td
-                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
-                      >
-                        {{ product.sq }}
-                      </td>
-                      <td
-                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
-                      >
-                        {{ product.name }}
-                      </td>
-                      <td
-                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
-                      >
-                        {{ product.price }}
-                      </td>
-                      <td
-                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
-                      >
-                        {{ product.wholesale_price }}
-                      </td>
-                      <td
-                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
-                      >
-                        {{ product.picture }}
-                      </td>
-                      <td
-                        class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
-                      >
-                        {{ product.categoryName }}
-                      </td>
-                      <td
-                        class="whitespace-nowrap px-6 py-4 text-center text-sm font-medium"
-                      >
-                        <button
-                          type="button"
-                          class="text-gray-500 hover:text-gray-700"
-                        >
-                          <IconDetails />
-                        </button>
-                      </td>
-                      <td
-                        class="whitespace-nowrap px-6 py-4 text-center text-sm font-medium"
-                      >
-                        <button
-                          type="button"
-                          class="text-green-500 hover:text-green-700"
-                          @click="openEditProductModal(product.id)"
-                        >
-                          <IconEdit />
-                        </button>
-                      </td>
-
-                      <td
-                        class="whitespace-nowrap px-6 py-4 text-center text-sm font-medium"
-                        @click="deleteProduct(product.id)"
-                      >
-                        <button
-                          type="button"
-                          class="text-red-500 hover:text-red-700"
-                        >
-                          <IconDelete />
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                <ButtonPrimary content="Add Product" />
               </div>
             </div>
           </div>
+          <ProductsTable />
         </div>
       </div>
     </div>
@@ -296,12 +148,10 @@
 </template>
 
 <script>
-import IconEdit from "../components/icons/IconEdit.vue";
-import IconDelete from "../components/icons/IconDelete.vue";
-import IconDetails from "../components/icons/IconDetails.vue";
 import ResourceHeader from "../components/shared/ResourceHeader.vue";
-// import ButtonSuccess from "@/components/ui/buttons/ButtonSuccess.vue";
 import SearchInput from "../components/ui/inputs/SearchInput.vue";
+import ButtonPrimary from "@/components/ui/buttons/ButtonPrimary.vue";
+import ProductsTable from "@/components/products/ProductsTable.vue";
 
 import axios from "@/plugins/axios/index.js";
 
@@ -311,17 +161,13 @@ import { storeToRefs } from "pinia";
 export default {
   components: {
     SearchInput,
-    IconEdit,
-    IconDelete,
-    IconDetails,
     ResourceHeader,
+    ButtonPrimary,
+    ProductsTable,
   },
   data() {
     return {
-      products: [],
       categories: [],
-      pivotData: [],
-      categoryNames: [],
       selectedCategory: "",
       selectedCategoriesArr: [],
       selectedCategoryId: [],
@@ -342,24 +188,6 @@ export default {
       .then((products) => {
         this.store.list = products;
       });
-    // .finally(() => {
-    //   this.store.list.forEach((product) => {
-    //     this.store.list.categoryName = [];
-    //     this.categories.push(product.categoryName);
-    //   });
-    //   this.categories.forEach((category) => {
-    //     category.forEach((item) => {
-    //       this.pivotData.push([item.pivot, item.name]);
-    //     });
-    //   });
-    //   this.pivotData.forEach((data) => {
-    //     this.products.forEach((product) => {
-    //       if (data[0].product_id == product.id) {
-    //         product.categoryName.push(data[1]);
-    //       }
-    //     });
-    //   });
-    // });
     // Get categories for editing Product
     const categorySelectionElement =
       document.getElementById("categorySelection");
@@ -389,32 +217,19 @@ export default {
       formData.append("wholesale_price", this.wholesalePrice);
       formData.append("details", this.details);
       formData.append("picture", this.image);
-      // for (let i = 0; i < this.selectedCategoryId.length; i++) {
-      //   formData.append("categories", this.selectedCategoryId[i]);
-      // }
+      for (let i = 0; i < this.selectedCategoryId.length; i++) {
+        formData.append(`category_ids[${i}]`, this.selectedCategoryId[i]);
+      }
 
-      // formData.forEach((data) => {
-      //   console.log(data);
-      // });
-
-      // fetch(
-      //   `http://127.0.0.1:8000/api/products/${this.productId}?_method=PUT`,
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "multipart/form-data",
-      //       accept: "application/json",
-      //     },
-      //     body: formData,
-      //   }
-      // )
-      //   .then((res) => {
-      //     // console.log(res.json());
-      //     // console.log(res.status);
-      //   })
-      //   .then(() => {
-      //     // console.log(data);
-      //   });
+      axios
+        .put(`products/${this.productId}`, formData)
+        .then((res) => {
+          console.log(res.json());
+          console.log(res.status);
+        })
+        .then((data) => {
+          console.log(data);
+        });
     },
     openEditProductModal(id) {
       document.getElementById("editProductModal").classList.remove("invisible");
@@ -453,9 +268,8 @@ export default {
       this.imageUrl = URL.createObjectURL(file);
     },
     getCategory() {
-      let selectedCategoryName = this.selectedCategory;
       let selectedCategoryId = this.selectedCategory.split(",")[0];
-      this.selectedCategoriesArr.push(selectedCategoryName);
+
       this.selectedCategoryId.push(selectedCategoryId);
     },
   },

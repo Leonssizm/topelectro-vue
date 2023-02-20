@@ -92,7 +92,6 @@ export default {
       this.showEditModal = true;
     },
     handleUpdateCategory(category) {
-      console.log(category);
       // const index = this.store.list.findIndex((item) => item.id == category.id);
       // this.this.store.list[index] = category;
       this.store.updateCategory(category);
