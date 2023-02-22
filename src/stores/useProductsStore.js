@@ -16,6 +16,9 @@ export const useProductsStore = defineStore("products", {
       const index = this.list.findIndex((item) => item.id == product.id);
       this.list[index] = product;
     },
+    addProduct(product) {
+      this.list.push(product);
+    },
   },
   getters: {
     getQuantity() {

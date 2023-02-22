@@ -12,7 +12,10 @@
             <div class="flex justify-between py-3 pl-2">
               <SearchInput />
               <div class="flex text-sm">
-                <ButtonPrimary content="Add Product" />
+                <ButtonPrimary
+                  content="Add Product"
+                  @click="this.displayAddModal = true"
+                />
               </div>
             </div>
           </div>
@@ -21,6 +24,10 @@
       </div>
     </div>
   </div>
+  <ProductsAddModal
+    @closeAddModal="this.displayAddModal = false"
+    v-if="this.displayAddModal"
+  />
 </template>
 
 <script>
@@ -28,7 +35,7 @@ import ResourceHeader from "../components/shared/ResourceHeader.vue";
 import SearchInput from "../components/ui/inputs/SearchInput.vue";
 import ButtonPrimary from "@/components/ui/buttons/ButtonPrimary.vue";
 import ProductsTable from "@/components/products/ProductsTable.vue";
-
+import ProductsAddModal from "@/components/products/ProductsModalAdd.vue";
 import axios from "@/plugins/axios/index.js";
 
 import { useProductsStore } from "@/stores/useProductsStore";
@@ -40,6 +47,7 @@ export default {
     ResourceHeader,
     ButtonPrimary,
     ProductsTable,
+    ProductsAddModal,
   },
   data() {
     return {
@@ -48,8 +56,10 @@ export default {
       selectedCategoriesArr: [],
       selectedCategoryId: [],
       productId: "",
+      displayAddModal: false,
     };
   },
+
   mounted() {
     axios.get("products").then((response) => {
       const products = response.data;
@@ -59,7 +69,6 @@ export default {
   methods: {
     getCategory() {
       let selectedCategoryId = this.selectedCategory.split(",")[0];
-
       this.selectedCategoryId.push(selectedCategoryId);
     },
   },
