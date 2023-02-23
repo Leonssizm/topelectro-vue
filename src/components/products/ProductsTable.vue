@@ -317,13 +317,14 @@ function editProduct() {
   formData.append("price", productPrice.value);
   formData.append("wholesale_price", productWholesalePrice.value);
   formData.append("details", productDetails.value);
-  formData.append("picture", image);
+  formData.append("picture", image.value);
   for (let i = 0; i < selectedCategories.length; i++) {
     formData.append(`category_ids[${i}]`, selectedCategories[i]);
   }
 
   axios.put(`products/${productId.value}`, formData).then((response) => {
-    productsStore.updateProducts(response.data);
+    console.log(response);
+    productsStore.updateProduct(response.data);
   });
 }
 </script>
