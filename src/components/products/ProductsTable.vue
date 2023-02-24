@@ -311,6 +311,7 @@ function getChosenCategories() {
 function editProduct() {
   // Sending request
   let formData = new FormData();
+  formData.append("_method", "put");
   formData.append("name", productName.value);
   formData.append("sq", productSQ.value);
   formData.append("color", productColor.value);
@@ -321,10 +322,13 @@ function editProduct() {
   for (let i = 0; i < selectedCategories.length; i++) {
     formData.append(`category_ids[${i}]`, selectedCategories[i]);
   }
-
-  axios.put(`products/${productId.value}`, formData).then((response) => {
-    console.log(response);
-    productsStore.updateProduct(response.data);
-  });
+  axios
+    .post(`products/${productId.value}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    .then((response) => {
+      displayEditProductModal.value = false;
+      productsStore.updateProduct(response.data);
+    });
 }
 </script>

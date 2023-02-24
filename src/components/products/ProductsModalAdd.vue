@@ -173,6 +173,7 @@ function addProduct() {
   for (let i = 0; i < selectedCategories.length; i++) {
     formData.append(`category_ids[${i}]`, selectedCategories[i]);
   }
+
   axios
     .post(`products`, formData, {
       headers: {
