@@ -4,7 +4,7 @@ import CategoriesView from "@/views/CategoriesView.vue";
 import ProductsView from "@/views/ProductsView.vue";
 import UsersView from "@/views/UsersView.vue";
 import CommentsView from "@/views/CommentsView.vue";
-
+import ProductDetails from "@/components/products/ProductDetails.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -23,6 +23,11 @@ const router = createRouter({
       path: "/products",
       name: "products",
       component: ProductsView,
+    },
+    {
+      path: "/products/:id",
+      name: "details",
+      component: ProductDetails,
     },
     {
       path: "/users",

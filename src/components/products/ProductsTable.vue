@@ -101,7 +101,11 @@
               class="whitespace-nowrap px-6 py-4 text-center text-sm font-medium"
             >
               <button type="button" class="text-gray-500 hover:text-gray-700">
-                <IconDetails />
+                <router-link
+                  :to="{ name: 'details', params: { id: product.id } }"
+                >
+                  <IconDetails />
+                </router-link>
               </button>
             </td>
             <td
