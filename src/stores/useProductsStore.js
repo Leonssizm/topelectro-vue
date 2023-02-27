@@ -12,7 +12,6 @@ export const useProductsStore = defineStore("products", {
       this.list = this.list.filter((product) => product.id != id);
     },
     updateProduct(product) {
-      console.log(product);
       const index = this.list.findIndex((item) => item.id == product.id);
       this.list[index] = product;
     },

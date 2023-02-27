@@ -1,26 +1,41 @@
 <template>
   <div class="ml-16 mt-8 flex flex-col text-xl">
     <div>
-      <h1>Product Details: SQ{{ productSQ }}</h1>
+      <h1 class="mb-5">Product Details: SQ{{ productSQ }}</h1>
     </div>
     <!-- PRODUCT -->
     <div class="container mx-auto bg-slate-100">
-      <div class="flex justify-around">
-        <div class="flex flex-col">
-          <label>ID</label>
-          <label>SQ</label>
-          <label>Name</label>
-          <label>Price</label>
-          <label>Wholesale Price</label>
-        </div>
-        <div>
-          <p>{{ productId }}</p>
-          <p>{{ productSQ }}</p>
-          <p>{{ productName }}</p>
-          <p>{{ productPrice }}</p>
-          <p>{{ productWholesalePrice }}</p>
-          <!-- <img :src="productImage" /> -->
-        </div>
+      <div class="mt-5 flex justify-between">
+        <label class="px-5">ID</label>
+        <p class="px-5">{{ productId }}</p>
+      </div>
+      <div class="mt-5 flex justify-between">
+        <label class="px-5">SQ</label>
+        <p class="px-5">{{ productSQ }}</p>
+      </div>
+      <div class="mt-5 flex justify-between">
+        <label class="px-5">Name</label>
+        <p class="px-5">{{ productName }}</p>
+      </div>
+      <div class="mt-5 flex justify-between">
+        <label class="px-5">Price</label>
+        <p class="px-5">{{ productPrice }}</p>
+      </div>
+      <div class="mt-5 flex justify-between">
+        <label class="px-5">Wholesale Price</label>
+        <p class="px-5">{{ productWholesalePrice }}</p>
+      </div>
+      <div class="mt-5 flex justify-between">
+        <label class="px-5">Picture</label>
+        <img
+          class="h-58 w-96 object-cover px-5 pl-10 pt-5"
+          :src="productImage"
+          alt="product-image"
+        />
+      </div>
+      <div class="mt-5 flex justify-between">
+        <label class="px-5">Categories</label>
+        <p class="px-5">{{ productCategories }}</p>
       </div>
     </div>
   </div>
@@ -38,7 +53,10 @@ let productId = ref("");
 let productName = ref("");
 let productPrice = ref("");
 let productWholesalePrice = ref("");
-// let productImage = ref("");
+let productImage = ref("");
+let productCategoriesArr = ref([]);
+let productCategories = ref("");
+
 axios.get("products/" + routerIdParams.id).then((response) => {
   let servedProduct = response.data;
   productSQ.value = servedProduct.sq;
@@ -46,8 +64,11 @@ axios.get("products/" + routerIdParams.id).then((response) => {
   productName.value = servedProduct.name;
   productPrice.value = servedProduct.price;
   productWholesalePrice.value = servedProduct.wholesale_price;
-  // productImage.value =
-  //   "http://127.0.0.1:8000" + "/images/" + servedProduct.picture;
-  // console.log(productImage);
+  productImage.value =
+    "http://127.0.0.1:8000" + "/storage/" + servedProduct.picture;
+  servedProduct.categories.forEach((category) => {
+    productCategoriesArr.value.push(category.name);
+  });
+  productCategories.value = productCategoriesArr.value.join(", ");
 });
 </script>
