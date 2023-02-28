@@ -27,42 +27,33 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from "@/plugins/axios/index.js";
 import ButtonWarning from "@/components/ui/buttons/ButtonWarning.vue";
 import ButtonSuccess from "@/components/ui/buttons/ButtonSuccess.vue";
-export default {
-  components: {
-    ButtonWarning,
-    ButtonSuccess,
-  },
-  inject: ["name", "description", "id"],
-  data() {
-    return {
-      categories: [],
-      categoryName: this.name,
-      categoryDescription: this.description,
-      categoryId: this.id,
-    };
-  },
-  mounted() {
-    axios.get("categories").then((categories) => {
-      this.categories = categories.data;
-    });
-  },
-  methods: {
-    sendEditedCategoryInfo() {
-      // editCategory
-      const category = {
-        id: this.categoryId,
-        name: this.categoryName,
-        description: this.categoryDescription,
-      };
-      axios.put(`categories/${this.categoryId}`, category).then(() => {
-        this.$emit("closeEditModal");
-        this.$emit("updateCategory", category);
-      });
-    },
-  },
-};
+
+import { ref, inject, reactive } from "vue";
+
+const emit = defineEmits(["closeEditModal", "updateCategory"]);
+
+let name = inject("name").value;
+let description = inject("description").value;
+let id = inject("id").value;
+
+let categoryName = ref(name);
+let categoryDescription = ref(description);
+let categoryId = ref(id);
+
+function sendEditedCategoryInfo() {
+  // editCategory
+  const category = reactive({
+    id: categoryId,
+    name: categoryName,
+    description: categoryDescription,
+  });
+  axios.put(`categories/${categoryId.value}`, category).then(() => {
+    emit("closeEditModal");
+    emit("updateCategory", category);
+  });
+}
 </script>
