@@ -102,7 +102,7 @@
       </div>
     </nav>
 
-    <div class="flex">
+    <div class="flex-1">
       <RouterView />
     </div>
   </div>

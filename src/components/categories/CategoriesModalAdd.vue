@@ -1,52 +1,47 @@
 <template>
   <div class="visible">
     <div class="flex w-1/4 flex-col rounded border bg-green-100">
-      <div class="mb-4 px-2">
-        <label class="mb-1 block text-sm">Category Name:</label>
-        <input
-          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-          type="text"
-          autofocus
-          placeholder="Category"
-          v-model="category.name"
-        />
-      </div>
+      <v-form>
+        <v-container>
+          <v-text-field
+            type="text"
+            placeholder="Category"
+            v-model="category.name"
+            label="Category Name"
+          ></v-text-field>
 
-      <div class="mb-4 px-2">
-        <label class="mb-1 block text-sm">Description:</label>
-        <textarea
-          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-          type="text"
-          autofocus
-          placeholder="Description"
-          v-model="category.description"
-        ></textarea>
-      </div>
-
-      <h1>{{ category.description }}</h1>
-
-      <div class="mb-2 flex justify-around">
-        <ButtonSuccess @click="createNewCategory" content="Add" />
-        <ButtonWarning @click="$emit('closeAddModal')" />
-      </div>
+          <v-text-field
+            type="text"
+            placeholder="Description"
+            v-model="category.description"
+            label="Description"
+          ></v-text-field>
+        </v-container>
+        <v-card-actions class="flex justify-between pt-0">
+          <v-btn @click="createNewCategory" variant="flat" color="primary">
+            Add Category</v-btn
+          >
+          <v-btn variant="flat" color="error" @click="$emit('closeAddModal')">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-form>
     </div>
   </div>
 </template>
 
 <script setup>
-import ButtonWarning from "@/components/ui/buttons/ButtonWarning.vue";
-import ButtonSuccess from "@/components/ui/buttons/ButtonSuccess.vue";
 import axios from "@/plugins/axios/index.js";
 import { useCategoriesStore } from "@/stores/useCategoriesStore";
-
+import { reactive } from "vue";
 const emit = defineEmits(["closeAddModal"]);
 
 const categoriesStore = useCategoriesStore();
 
-const category = {
+const category = reactive({
   name: "",
   description: "",
-};
+});
 
 function createNewCategory() {
   axios

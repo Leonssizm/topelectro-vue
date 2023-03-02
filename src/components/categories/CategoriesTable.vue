@@ -11,7 +11,7 @@
       <tr v-for="category in categoriesStore.list" :key="category.id">
         <td>{{ category.id }}</td>
         <td>{{ category.name }}</td>
-        <td width="900px">{{ category.description }}</td>
+        <td>{{ category.description }}</td>
         <td>
           <button
             type="button"
