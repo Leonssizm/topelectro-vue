@@ -1,36 +1,37 @@
 <template>
   <div class="visible">
-    <div class="flex w-1/4 flex-col rounded border bg-green-100">
-      <div class="mb-4 px-2">
-        <label class="mb-1 block text-sm">Category Name:</label>
-        <input
-          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-          type="text"
-          placeholder="Category"
-          v-model="categoryName"
-        />
-      </div>
-      <div class="mb-4 px-2">
-        <label class="mb-1 block text-sm">Description:</label>
-        <textarea
-          class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-          type="text"
-          placeholder="Description"
-          v-model="categoryDescription"
-        ></textarea>
-      </div>
-      <div class="mb-2 flex justify-around">
-        <ButtonSuccess content="Save Changes" @click="sendEditedCategoryInfo" />
-        <ButtonWarning @click="$emit('closeEditModal')" />
-      </div>
+    <div class="flex w-1/4 flex-col rounded border bg-gray-100">
+      <v-form>
+        <v-container>
+          <v-text-field
+            type="text"
+            placeholder="Category"
+            v-model="categoryName"
+            label="Category Name"
+          ></v-text-field>
+
+          <v-text-field
+            type="text"
+            placeholder="Description"
+            v-model="categoryDescription"
+            label="Description"
+          ></v-text-field>
+        </v-container>
+        <v-card-actions class="flex justify-between pt-0">
+          <v-btn @click="sendEditedCategoryInfo" variant="flat" color="primary">
+            Save Changes</v-btn
+          >
+          <v-btn variant="flat" color="error" @click="$emit('closeEditModal')">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-form>
     </div>
   </div>
 </template>
 
 <script setup>
 import axios from "@/plugins/axios/index.js";
-import ButtonWarning from "@/components/ui/buttons/ButtonWarning.vue";
-import ButtonSuccess from "@/components/ui/buttons/ButtonSuccess.vue";
 
 import { ref, inject, reactive } from "vue";
 
