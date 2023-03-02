@@ -1,5 +1,61 @@
 <template>
-  <div class="inline-block w-full p-1.5 align-middle">
+  <v-table theme="dark">
+    <thead>
+      <tr>
+        <th class="text-left">ID</th>
+        <th class="text-left">SQ</th>
+        <th class="text-left">Name</th>
+        <th class="text-left">Price</th>
+        <th class="text-left">Wholesale Price</th>
+        <th class="text-left">Image</th>
+        <th class="text-left">Categories</th>
+        <th class="text-left">Details</th>
+        <th class="text-left">Edit</th>
+        <th class="text-left">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="product in productsStore.list" :key="product.id">
+        <td>{{ product.id }}</td>
+        <td>{{ product.sq }}</td>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.wholesale_price }}</td>
+        <td>
+          <v-img
+            :src="'http://127.0.0.1:8000/storage/' + product.picture"
+            alt="product image"
+          />
+        </td>
+        <td></td>
+        <td>
+          <button type="button" class="text-gray-500 hover:text-gray-700">
+            <router-link :to="{ name: 'details', params: { id: product.id } }">
+              <IconDetails />
+            </router-link>
+          </button>
+        </td>
+        <td
+          class="whitespace-nowrap px-6 py-4 text-center text-sm font-medium"
+          @click="displayProductValuesInEditModal(product, product.id)"
+        >
+          <button type="button" class="text-green-500 hover:text-green-700">
+            <IconEdit />
+          </button>
+        </td>
+        <td
+          class="whitespace-nowrap px-6 py-4 text-center text-sm font-medium"
+          @click="deleteProduct(product.id)"
+        >
+          <button type="button" class="text-red-500 hover:text-red-700">
+            <IconDelete />
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </v-table>
+
+  <!-- <div class="inline-block w-full p-1.5 align-middle">
     <div class="overflow-hidden rounded-lg border">
       <table class="table-fixed divide-y divide-gray-200">
         <thead class="bg-gray-50">
@@ -129,7 +185,7 @@
         </tbody>
       </table>
     </div>
-  </div>
+  </div> -->
 
   <!-- Edit Product Modal -->
   <div class="visible" v-if="displayEditProductModal">
