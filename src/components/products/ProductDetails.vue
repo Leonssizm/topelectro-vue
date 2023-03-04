@@ -1,44 +1,34 @@
 <template>
-  <div class="ml-16 mt-8 flex flex-col text-xl">
-    <div>
-      <h1 class="mb-5">Product Details: SQ{{ productSQ }}</h1>
-    </div>
-    <!-- PRODUCT -->
-    <div class="container mx-auto bg-slate-100">
-      <div class="mt-5 flex justify-between">
-        <label class="px-5">ID</label>
-        <p class="px-5">{{ productId }}</p>
-      </div>
-      <div class="mt-5 flex justify-between">
-        <label class="px-5">SQ</label>
-        <p class="px-5">{{ productSQ }}</p>
-      </div>
-      <div class="mt-5 flex justify-between">
-        <label class="px-5">Name</label>
-        <p class="px-5">{{ productName }}</p>
-      </div>
-      <div class="mt-5 flex justify-between">
-        <label class="px-5">Price</label>
-        <p class="px-5">{{ productPrice }}</p>
-      </div>
-      <div class="mt-5 flex justify-between">
-        <label class="px-5">Wholesale Price</label>
-        <p class="px-5">{{ productWholesalePrice }}</p>
-      </div>
-      <div class="mt-5 flex justify-between">
-        <label class="px-5">Picture</label>
-        <img
-          class="h-58 w-96 object-cover px-5 pl-10 pt-5"
-          :src="productImage"
-          alt="product-image"
-        />
-      </div>
-      <div class="mt-5 flex justify-between">
-        <label class="px-5">Categories</label>
-        <p class="px-5">{{ productCategories }}</p>
-      </div>
-    </div>
-  </div>
+  <h1 class="mb-5 ml-16 mt-8 flex flex-col text-xl">
+    Product Details: SQ{{ productSQ }}
+  </h1>
+  <v-card class="mx-auto mt-8 flex flex-col text-xl" max-width="400">
+    <v-img
+      class="align-end text-white"
+      height="400"
+      width="400"
+      :src="productImage"
+      cover
+    >
+      <v-card-title> {{ productName }}</v-card-title>
+    </v-img>
+
+    <v-card-subtitle class="pt-4"> SQ: {{ productSQ }} </v-card-subtitle>
+
+    <v-card-text>
+      <div>Price: {{ productPrice }}</div>
+      <div>Wholesale Price {{ productWholesalePrice }}</div>
+      <v-divider :thickness="20"></v-divider>
+      <div>Categories: {{ productCategories }}</div>
+    </v-card-text>
+
+    <v-card-actions>
+      <v-row class="flex justify-around">
+        <v-btn color="green"> Edit Product </v-btn>
+        <v-btn color="red"> Delete </v-btn>
+      </v-row>
+    </v-card-actions>
+  </v-card>
 </template>
 
 <script setup>

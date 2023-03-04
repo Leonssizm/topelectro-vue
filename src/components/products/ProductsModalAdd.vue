@@ -1,118 +1,93 @@
 <template>
   <div class="visible">
-    <div class="flex w-1/3 flex-col rounded border bg-green-100">
-      <div class="mt-5 flex justify-around">
-        <div class="mb-4 px-2">
-          <label class="mb-1 block text-sm">Product Name:</label>
-          <input
-            class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-            type="text"
-            placeholder="Name"
-            v-model="productName"
-          />
-        </div>
-        <div class="mb-4 px-2">
-          <label class="mb-1 block text-sm">SQ:</label>
-          <input
-            class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-            type="text"
-            placeholder="SQ"
-            v-model="productSQ"
-          />
-        </div>
-      </div>
-      <div class="flex justify-around">
-        <div class="mb-4 px-2">
-          <label class="mb-1 block text-sm">Price:</label>
-          <input
-            class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-            type="text"
-            placeholder="Price"
-            v-model="productPrice"
-          />
-        </div>
-        <div class="mb-4 px-2">
-          <label class="mb-1 block text-sm">Wholesale Price:</label>
-          <input
-            class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-            type="text"
-            placeholder="Wholesale Price"
-            v-model="productWholesalePrice"
-          />
-        </div>
-      </div>
-      <div class="flex justify-around">
-        <div class="px-2">
-          <div class="flex flex-col items-center">
-            <label class="mb-1 block text-sm">Image:</label>
-            <input
-              type="file"
-              class="text-grey-500 text-sm file:mr-5 file:rounded-full file:border-0 file:bg-blue-50 file:py-2 file:px-6 file:text-sm file:font-medium file:text-blue-700 hover:file:cursor-pointer hover:file:bg-amber-50 hover:file:text-amber-700"
-              accept="image"
-              @change="pictureDisplayAndStore"
-            />
-          </div>
-        </div>
-        <div class="px-2">
-          <div class="flex flex-col items-center">
-            <label class="mb-1 block text-sm">Color:</label>
-            <input
-              type="text"
-              class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-              placeholder="color"
-              v-model="productColor"
-            />
-          </div>
-        </div>
-      </div>
-      <div id="preview" class="mt-8 flex justify-center">
-        <img v-if="imageUrl" :src="imageUrl" />
-      </div>
-      <!-- Select category -->
-      <div>
-        <div class="mb-4 flex px-2">
-          <div class="mb-3 xl:w-96">
-            <label>Select Category</label>
-            <select
-              class="form-select m-0 block w-full appearance-none rounded border border-solid border-gray-300 bg-white bg-clip-padding bg-no-repeat px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border-blue-600 focus:bg-white focus:text-gray-700 focus:outline-none"
-              aria-label="Default select example"
-              id="categoriesSelect"
-              v-model="selectedCategoryId"
-              @change="getChosenCategories"
-            >
-              <option hidden>Select Category</option>
-            </select>
-          </div>
-        </div>
-      </div>
-      <div></div>
-      <div class="mb-4 px-2">
-        <div class="flex flex-col">
-          <label class="mb-1 block text-sm">Details:</label>
-          <textarea
-            type="text"
-            class="focus:shadow-outline w-full rounded border px-4 py-2 outline-none focus:border-green-300"
-            placeholder="specify details"
-            v-model="productDetails"
-          ></textarea>
-        </div>
-      </div>
-      <div class="mb-2 flex justify-around">
-        <button
-          class="rounded bg-green-500 py-2 px-3 font-bold text-white hover:bg-green-700"
-          type="button"
-          @click="addProduct"
-        >
-          Add Product
-        </button>
-        <button
-          type="button"
-          class="rounded bg-red-500 py-2 px-3 font-bold text-white hover:bg-red-700"
-          @click="$emit('closeAddModal')"
-        >
-          Close
-        </button>
-      </div>
+    <div class="flex w-1/3 flex-col rounded border bg-gray-100">
+      <v-row justify="center">
+        <v-card>
+          <v-card-title>
+            <span class="text-h5">Add product</span>
+          </v-card-title>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    label="Name"
+                    v-model="productName"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    label="Product SQ"
+                    v-model="productSQ"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="6" md="4">
+                  <v-text-field
+                    label="Product Color"
+                    v-model="productColor"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    label="Price"
+                    v-model="productPrice"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    label="Wholesale Price"
+                    v-model="productWholesalePrice"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-select
+                    label="Categories"
+                    :items="selectItems"
+                    item-title="state"
+                    item-value="id"
+                    return-object
+                    multiple
+                    v-model="selectedCategories"
+                  ></v-select>
+                </v-col>
+                <v-col cols="12">
+                  <v-text-field
+                    label="details"
+                    v-model="productDetails"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-file-input
+                    label="File input"
+                    variant="filled"
+                    prepend-icon="mdi-camera"
+                    @change="pictureDisplayAndStore"
+                    show-size
+                    counter
+                  ></v-file-input>
+                </v-col>
+                <div id="preview" class="flex justify-center">
+                  <v-img
+                    v-if="imageUrl"
+                    :src="imageUrl"
+                    :width="130"
+                    aspect-ratio="16/9"
+                    cover
+                  ></v-img>
+                </div>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions class="flex justify-between">
+            <v-btn color="blue-darken-1" variant="text" @click="addProduct">
+              Add Product
+            </v-btn>
+            <v-btn color="red" variant="text" @click="$emit('closeAddModal')">
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-row>
     </div>
   </div>
 </template>
@@ -134,26 +109,15 @@ let productDetails = ref("");
 let image = ref("");
 let imageUrl = ref("");
 
-let selectedCategories = [];
-let selectedCategoryId = ref("");
-
+let selectItems = ref([]);
+let selectedCategories = ref([]);
 onMounted(() => {
   axios.get("categories").then((response) => {
     response.data.forEach((category) => {
-      document.getElementById("categoriesSelect").innerHTML += `
-      <option value=${category.id} id=${category.id}>${category.name}</option>
-      `;
+      selectItems.value.push({ state: category.name, id: category.id });
     });
   });
 });
-
-function getChosenCategories() {
-  if (
-    selectedCategories.find((id) => id == selectedCategoryId.value) == undefined
-  ) {
-    selectedCategories.push(selectedCategoryId.value);
-  }
-}
 
 function pictureDisplayAndStore(e) {
   const file = e.target.files[0];
@@ -170,8 +134,8 @@ function addProduct() {
   formData.append("wholesale_price", productWholesalePrice.value);
   formData.append("details", productDetails.value);
   formData.append("picture", image.value);
-  for (let i = 0; i < selectedCategories.length; i++) {
-    formData.append(`category_ids[${i}]`, selectedCategories[i]);
+  for (let i = 0; i < selectedCategories.value.length; i++) {
+    formData.append(`category_ids[${i}]`, selectedCategories.value[i].id);
   }
 
   axios

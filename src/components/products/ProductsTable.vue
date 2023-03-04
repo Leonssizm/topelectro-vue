@@ -91,6 +91,7 @@
                 </v-col>
                 <v-col cols="12">
                   <v-select
+                    label="Categories"
                     :items="selectItems"
                     item-title="state"
                     item-value="id"
@@ -200,7 +201,6 @@ function pictureDisplayAndStore(e) {
 function editProduct() {
   // Sending request
   let formData = new FormData();
-
   formData.append("_method", "put");
   formData.append("name", productName.value);
   formData.append("sq", productSQ.value);
