@@ -1,19 +1,14 @@
 <template>
   <div class="ml-2">
     <ResourceHeader header="Categories" />
-
-    <!-- TODO (not now): calke gaitane mere -->
     <div class="flex-col">
       <div class="mt-3 border-indigo-500 py-3 pl-5 hover:border-l-4">
-        <p>Total of {{ this.store.getQuantity }} Categories</p>
+        <p>Total of {{ store.getQuantity }} Categories</p>
       </div>
       <div class="flex justify-between py-3 pl-2">
         <SearchInput />
         <div class="flex text-sm">
-          <ButtonPrimary
-            @click="this.showAddModal = true"
-            content="Add Category"
-          />
+          <ButtonPrimary @click="showAddModal = true" content="Add Category" />
         </div>
       </div>
     </div>
@@ -24,19 +19,18 @@
   </div>
 
   <CategoriesModalAdd
-    @closeAddModal="this.showAddModal = false"
+    @closeAddModal="showAddModal = false"
     v-if="showAddModal"
   />
 
   <CategoriesModalEdit
-    @closeEditModal="this.showEditModal = false"
+    @closeEditModal="showEditModal = false"
     @updateCategory="handleUpdateCategory"
     v-if="showEditModal"
   />
 </template>
 
-<script>
-// TODO: global Use setup scripts and composition api\
+<script setup>
 import axios from "@/plugins/axios/index.js";
 import "@/assets/main.css";
 import SearchInput from "@/components/ui/inputs/SearchInput.vue";
@@ -44,73 +38,51 @@ import CategoriesTable from "@/components/categories/CategoriesTable.vue";
 import CategoriesModalEdit from "@/components/categories/CategoriesModalEdit.vue";
 import CategoriesModalAdd from "@/components/categories/CategoriesModalAdd.vue";
 import ResourceHeader from "@/components/shared/ResourceHeader.vue";
-import { computed } from "vue";
+import { computed, ref, provide, onMounted } from "vue";
 import ButtonPrimary from "@/components/ui/buttons/ButtonPrimary.vue";
 import { useCategoriesStore } from "@/stores/useCategoriesStore";
-import { storeToRefs } from "pinia";
 
-export default {
-  components: {
-    CategoriesTable,
-    ResourceHeader,
-    SearchInput,
-    CategoriesModalEdit,
-    CategoriesModalAdd,
-    ButtonPrimary,
-  },
-  data() {
-    return {
-      categories: [],
-      categoryDescription: "",
-      categoryName: "",
-      categoryId: "",
-      showAddModal: false,
-      showEditModal: false,
-    };
-  },
-  provide() {
-    return {
-      name: computed(() => this.categoryName),
-      description: computed(() => this.categoryDescription),
-      id: computed(() => this.categoryId),
-    };
-  },
-  methods: {
-    closeAddCategoryModal() {
-      this.showAddModal = false;
-    },
-    deleteCategory(id) {
-      axios.delete(`categories/${id}`).then(() => {
-        this.store.deleteCategory(id);
-      });
-    },
-    openEditCategoryModal(id) {
-      this.categoryId = id;
-      const category = this.store.list.filter((item) => item.id == id);
-      this.categoryName = category[0].name;
-      this.categoryDescription = category[0].description;
-      this.showEditModal = true;
-    },
-    handleUpdateCategory(category) {
-      // const index = this.store.list.findIndex((item) => item.id == category.id);
-      // this.this.store.list[index] = category;
-      this.store.updateCategory(category);
-    },
-  },
-  mounted() {
-    axios.get("categories").then((response) => {
-      const categories = response.data;
-      this.store.setCategories(categories);
-    });
-  },
+const store = useCategoriesStore();
+let categoryDescription = ref("");
+let categoryName = ref("");
+let categoryId = ref("");
+let showAddModal = ref(false);
+let showEditModal = ref(false);
 
-  setup() {
-    const store = useCategoriesStore();
-    const { list } = storeToRefs(store);
-    return {
-      store,
-      list,
-    };
-  },
-};
+provide(
+  "name",
+  computed(() => categoryName)
+);
+provide(
+  "description",
+  computed(() => categoryDescription)
+);
+provide(
+  "id",
+  computed(() => categoryId)
+);
+
+function deleteCategory(id) {
+  axios.delete(`categories/${id}`).then(() => {
+    store.deleteCategory(id);
+  });
+}
+function openEditCategoryModal(id) {
+  categoryId.value = id;
+  const category = store.list.filter((item) => item.id == id);
+  categoryName.value = category[0].name;
+  categoryDescription.value = category[0].description;
+  showEditModal.value = true;
+}
+function handleUpdateCategory(category) {
+  // const index = this.store.list.findIndex((item) => item.id == category.id);
+  // this.this.store.list[index] = category;
+  store.updateCategory(category);
+}
+onMounted(() => {
+  axios.get("categories").then((response) => {
+    const categories = response.data;
+    store.setCategories(categories);
+  });
+});
 </script>

@@ -2,12 +2,12 @@ import { defineStore } from "pinia";
 export const useProductsStore = defineStore("products", {
   state: () => ({
     list: [],
+    searchedProduct: [],
   }),
   actions: {
     setProducts(products) {
       this.list = products;
     },
-
     deleteProduct(id) {
       this.list = this.list.filter((product) => product.id != id);
     },

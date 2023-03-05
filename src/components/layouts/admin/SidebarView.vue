@@ -1,5 +1,5 @@
 <template>
-  <div class="flex">
+  <div class="flex bg-cyan-50">
     <nav>
       <div class="flex-row">
         <RouterLink to="/" class="flex space-x-4 px-4 py-8">

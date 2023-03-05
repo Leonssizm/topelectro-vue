@@ -23,6 +23,8 @@
         <td>{{ product.wholesale_price }}</td>
         <td>
           <v-img
+            max-width="50"
+            class="rounded-md"
             :src="'http://127.0.0.1:8000/storage/' + product.picture"
             alt="product image"
           />
@@ -123,6 +125,7 @@
                     :width="130"
                     aspect-ratio="16/9"
                     cover
+                    class="rounded-lg"
                   ></v-img>
                 </div>
               </v-row>

@@ -15,11 +15,6 @@
   </div>
 </template>
 
-<script scoped>
+<script setup>
 import IconSearch from "@/components/icons/IconSearch.vue";
-export default {
-  components: {
-    IconSearch,
-  },
-};
 </script>
