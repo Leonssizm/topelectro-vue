@@ -69,14 +69,11 @@ function deleteCategory(id) {
 }
 function openEditCategoryModal(id) {
   categoryId.value = id;
-  const category = store.list.filter((item) => item.id == id);
-  categoryName.value = category[0].name;
-  categoryDescription.value = category[0].description;
+  categoryName.value = store.getChosenCategory(id).name;
+  categoryDescription.value = store.getChosenCategory(id).description;
   showEditModal.value = true;
 }
 function handleUpdateCategory(category) {
-  // const index = this.store.list.findIndex((item) => item.id == category.id);
-  // this.this.store.list[index] = category;
   store.updateCategory(category);
 }
 onMounted(() => {

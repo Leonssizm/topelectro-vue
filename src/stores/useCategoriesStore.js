@@ -8,7 +8,6 @@ export const useCategoriesStore = defineStore("categories", {
     setCategories(categories) {
       this.list = categories;
     },
-
     addCategory(category) {
       this.list.push(category);
     },
@@ -18,6 +17,9 @@ export const useCategoriesStore = defineStore("categories", {
     },
     deleteCategory(id) {
       this.list = this.list.filter((category) => category.id != id);
+    },
+    getChosenCategory(id) {
+      return this.list.filter((item) => item.id == id)[0];
     },
   },
   getters: {
