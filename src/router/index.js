@@ -5,6 +5,7 @@ import ProductsView from "@/views/ProductsView.vue";
 import UsersView from "@/views/UsersView.vue";
 import CommentsView from "@/views/CommentsView.vue";
 import ProductDetails from "@/components/products/ProductDetails.vue";
+import PlaygroundView from "@/views/PlaygroundView.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -38,6 +39,11 @@ const router = createRouter({
       path: "/comments",
       name: "comments",
       component: CommentsView,
+    },
+    {
+      path: "/playground",
+      name: "playground",
+      component: PlaygroundView,
     },
   ],
 });
