@@ -1,3 +1,4 @@
+import { min } from "@vee-validate/rules";
 import { defineRule } from "vee-validate";
 
 defineRule("required", (value) => {
@@ -7,10 +8,4 @@ defineRule("required", (value) => {
   return true;
 });
 
-defineRule("email", (value) => {
-  if (!/[a-z]/.test(value)) {
-    return "დროზე მეთქი";
-  }
-
-  return true;
-});
+defineRule("min", min);

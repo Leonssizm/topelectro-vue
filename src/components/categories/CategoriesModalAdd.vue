@@ -4,27 +4,26 @@
       <Form @submit="createNewCategory">
         <v-container>
           <Field
+            as="v-text-field"
+            label="სახელი"
             name="name"
-            v-model="category.name"
-            rules="required"
+            rules="required|min:3"
             class="mb-0"
+            hide-details
+            v-model="category.name"
           >
-            <v-text-field
-              type="text"
-              placeholder="Category"
-              label="Category Name"
-              hide-details
-            ></v-text-field>
+            <v-field-label>Category Name</v-field-label>
           </Field>
-
           <ErrorMessage name="name" class="text-red-500" />
-          <Field ref="category.description" name="description" rules="required">
-            <v-text-field
-              type="text"
-              placeholder="Description"
-              label="Description"
-              hide-details
-            ></v-text-field>
+          <Field
+            as="v-text-field"
+            label="აღწერა"
+            name="description"
+            rules="required|min:3"
+            hide-details
+            v-model="category.description"
+          >
+            <v-field-label>Category Description</v-field-label>
           </Field>
           <ErrorMessage name="description" class="text-red-500" />
         </v-container>
@@ -45,7 +44,10 @@
 import axios from "@/plugins/axios/index.js";
 import { useCategoriesStore } from "@/stores/useCategoriesStore";
 import { Form, Field, ErrorMessage } from "vee-validate";
+import { setLocale } from "@vee-validate/i18n";
 import { reactive } from "vue";
+
+setLocale("ka");
 const emit = defineEmits(["closeAddModal"]);
 
 const categoriesStore = useCategoriesStore();
