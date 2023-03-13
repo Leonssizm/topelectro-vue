@@ -12,6 +12,7 @@ configure({
         required: "This field is required",
         email: "This input is not in email format",
         min: "{field} must have at least 0:{min} symbols",
+        alpha_dash: "{field} must contain only numbers or symbols",
       },
       names: {
         // For English version, This will be auto generated according to the keys.
@@ -25,6 +26,7 @@ configure({
         required: "გთხოვთ შეავსოთ მოცემული ველი",
         email: "თქვენს მიერ შეყვანილი ტექსტი არ აკმაყოფილებს მეილის ფორმატს",
         min: "{field} უნდა შეიცავდეს მინიმუმ 0:{min} სიმბოლოს",
+        alpha_dash: "{field} უნდა შეიცავდეს მხოლოდ რიცხვებს ან სიმბოლოებს",
       },
       names: {
         password: "პაროლი",

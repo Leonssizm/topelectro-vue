@@ -24,55 +24,104 @@
                     <ErrorMessage name="name" class="text-red-500" />
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      label="Product SQ"
+                    <Field
+                      name="sq"
+                      label="SQ"
                       v-model="productSQ"
-                    ></v-text-field>
+                      as="v-text-field"
+                      hide-details
+                      rules="required|alpha_dash"
+                    >
+                      <v-field-label>Product SQ</v-field-label>
+                    </Field>
+                    <ErrorMessage name="sq" class="text-red-500" />
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field
-                      label="Product Color"
+                    <Field
+                      name="color"
+                      label="ფერი"
                       v-model="productColor"
-                    ></v-text-field>
+                      as="v-text-field"
+                      hide-details
+                      rules="required"
+                    >
+                      <v-field-label>Product Color</v-field-label>
+                    </Field>
+                    <ErrorMessage name="color" class="text-red-500" />
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      label="Price"
+                    <Field
+                      name="price"
+                      label="ფასი"
                       v-model="productPrice"
-                    ></v-text-field>
+                      as="v-text-field"
+                      hide-details
+                      rules="required|price"
+                    >
+                      <v-field-label>Product price</v-field-label>
+                    </Field>
+                    <ErrorMessage name="price" class="text-red-500" />
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      label="Wholesale Price"
+                    <Field
+                      name="wholesalePrice"
+                      label="საბითუმო ფასი"
                       v-model="productWholesalePrice"
-                    ></v-text-field>
+                      as="v-text-field"
+                      hide-details
+                      rules="required|price"
+                    >
+                      <v-field-label>Wholesale Price</v-field-label>
+                    </Field>
+                    <ErrorMessage name="wholesalePrice" class="text-red-500" />
                   </v-col>
                   <v-col cols="12">
-                    <v-select
+                    <Field
+                      name="categories"
                       label="Categories"
+                      placeholder="Categories"
+                      as="v-select"
                       :items="selectItems"
                       item-title="state"
                       item-value="id"
                       return-object
                       multiple
+                      hide-details
                       v-model="selectedCategories"
-                    ></v-select>
+                      rules="required"
+                    >
+                    </Field>
+                    <ErrorMessage name="categories" class="text-red-500" />
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
+                    <Field
+                      as="v-text-field"
+                      name="details"
                       label="details"
                       v-model="productDetails"
-                    ></v-text-field>
+                      rules="required"
+                      hide-details
+                    >
+                      <v-field-label>Details</v-field-label>
+                    </Field>
+                    <ErrorMessage name="details" class="text-red-500" />
                   </v-col>
                   <v-col cols="12">
-                    <v-file-input
-                      label="File input"
+                    <label>ატვირთე ფოტო</label>
+                    <Field
+                      name="fileInput"
+                      as="v-file-input"
+                      label="file Input"
                       variant="filled"
                       prepend-icon="mdi-camera"
                       @change="pictureDisplayAndStore"
                       show-size
                       counter
-                    ></v-file-input>
+                      rules="ext:jpg,png,svg"
+                      hide-details
+                    >
+                    </Field>
+                    <ErrorMessage name="fileInput" class="text-red-500" />
                   </v-col>
                   <div id="preview" class="flex justify-center">
                     <v-img

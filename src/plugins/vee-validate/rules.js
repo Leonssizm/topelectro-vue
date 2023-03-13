@@ -1,4 +1,4 @@
-import { min } from "@vee-validate/rules";
+import { min, alpha_dash, ext } from "@vee-validate/rules";
 import { defineRule } from "vee-validate";
 
 defineRule("required", (value) => {
@@ -9,3 +9,12 @@ defineRule("required", (value) => {
 });
 
 defineRule("min", min);
+defineRule("alpha_dash", alpha_dash);
+defineRule("price", (value) => {
+  const regex = /^[.0-9]+$/;
+  if (!regex.test(value)) {
+    return "ფასის ფორმატი არასწორია. მაგ: 74.00 ან 11.99";
+  }
+  return true;
+});
+defineRule("ext", ext);
