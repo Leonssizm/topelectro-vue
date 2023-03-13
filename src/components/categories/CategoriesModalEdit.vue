@@ -58,7 +58,6 @@ let categoryDescription = ref(description);
 let categoryId = ref(id);
 
 function sendEditedCategoryInfo() {
-  // editCategory
   const category = reactive({
     id: categoryId,
     name: categoryName,

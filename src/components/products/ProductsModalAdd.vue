@@ -1,93 +1,104 @@
 <template>
   <div class="visible">
     <div class="flex w-1/3 flex-col rounded border bg-gray-100">
-      <v-row justify="center">
-        <v-card>
-          <v-card-title>
-            <span class="text-h5">Add product</span>
-          </v-card-title>
-          <v-card-text>
-            <v-container>
-              <v-row>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    label="Name"
-                    v-model="productName"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    label="Product SQ"
-                    v-model="productSQ"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12" sm="6" md="4">
-                  <v-text-field
-                    label="Product Color"
-                    v-model="productColor"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    label="Price"
-                    v-model="productPrice"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    label="Wholesale Price"
-                    v-model="productWholesalePrice"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-select
-                    label="Categories"
-                    :items="selectItems"
-                    item-title="state"
-                    item-value="id"
-                    return-object
-                    multiple
-                    v-model="selectedCategories"
-                  ></v-select>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    label="details"
-                    v-model="productDetails"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-file-input
-                    label="File input"
-                    variant="filled"
-                    prepend-icon="mdi-camera"
-                    @change="pictureDisplayAndStore"
-                    show-size
-                    counter
-                  ></v-file-input>
-                </v-col>
-                <div id="preview" class="flex justify-center">
-                  <v-img
-                    v-if="imageUrl"
-                    :src="imageUrl"
-                    :width="130"
-                    aspect-ratio="16/9"
-                    cover
-                  ></v-img>
-                </div>
-              </v-row>
-            </v-container>
-          </v-card-text>
-          <v-card-actions class="flex justify-between">
-            <v-btn color="blue-darken-1" variant="text" @click="addProduct">
-              Add Product
-            </v-btn>
-            <v-btn color="red" variant="text" @click="$emit('closeAddModal')">
-              Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-row>
+      <Form @submit="addProduct">
+        <v-row justify="center">
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">Add product</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <Field
+                      name="name"
+                      label="სახელი"
+                      v-model="productName"
+                      as="v-text-field"
+                      hide-details
+                      rules="required|min:3"
+                    >
+                      <v-field-label>Product Name</v-field-label>
+                    </Field>
+                    <ErrorMessage name="name" class="text-red-500" />
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      label="Product SQ"
+                      v-model="productSQ"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field
+                      label="Product Color"
+                      v-model="productColor"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      label="Price"
+                      v-model="productPrice"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      label="Wholesale Price"
+                      v-model="productWholesalePrice"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-select
+                      label="Categories"
+                      :items="selectItems"
+                      item-title="state"
+                      item-value="id"
+                      return-object
+                      multiple
+                      v-model="selectedCategories"
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-text-field
+                      label="details"
+                      v-model="productDetails"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="12">
+                    <v-file-input
+                      label="File input"
+                      variant="filled"
+                      prepend-icon="mdi-camera"
+                      @change="pictureDisplayAndStore"
+                      show-size
+                      counter
+                    ></v-file-input>
+                  </v-col>
+                  <div id="preview" class="flex justify-center">
+                    <v-img
+                      v-if="imageUrl"
+                      :src="imageUrl"
+                      :width="130"
+                      aspect-ratio="16/9"
+                      cover
+                    ></v-img>
+                  </div>
+                </v-row>
+              </v-container>
+            </v-card-text>
+            <v-card-actions class="flex justify-between">
+              <button>
+                <v-btn color="blue-darken-1" variant="text">
+                  Add Product
+                </v-btn>
+              </button>
+              <v-btn color="red" variant="text" @click="$emit('closeAddModal')">
+                Close
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-row>
+      </Form>
     </div>
   </div>
 </template>
@@ -95,8 +106,11 @@
 <script setup>
 import { useProductsStore } from "@/stores/useProductsStore";
 import { ref, onMounted } from "vue";
+import { Form, Field, ErrorMessage } from "vee-validate";
+import { setLocale } from "@vee-validate/i18n";
 import axios from "@/plugins/axios/index.js";
 const emit = defineEmits(["closeAddModal"]);
+setLocale("ka");
 
 const productsStore = useProductsStore();
 let productName = ref("");
