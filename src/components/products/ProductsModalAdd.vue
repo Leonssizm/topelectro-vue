@@ -111,13 +111,14 @@
                     <Field
                       name="fileInput"
                       as="v-file-input"
+                      type="file"
                       label="file Input"
                       variant="filled"
                       prepend-icon="mdi-camera"
                       @change="pictureDisplayAndStore"
                       show-size
                       counter
-                      rules="ext:jpg,png,svg"
+                      rules="image"
                       hide-details
                     >
                     </Field>

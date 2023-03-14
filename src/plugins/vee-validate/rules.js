@@ -1,4 +1,4 @@
-import { min, alpha_dash, ext } from "@vee-validate/rules";
+import { min, alpha_dash } from "@vee-validate/rules";
 import { defineRule } from "vee-validate";
 
 defineRule("required", (value) => {
@@ -17,4 +17,11 @@ defineRule("price", (value) => {
   }
   return true;
 });
-defineRule("ext", ext);
+
+defineRule("image", (files) => {
+  if (!files) {
+    return false;
+  } else {
+    return true;
+  }
+});
