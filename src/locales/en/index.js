@@ -1,7 +1,9 @@
-import en from "./en.json";
+import navBar from "./navBar.json";
+import categories from "./categories.json";
 
-const translation = {
-  en,
+const translations = {
+  navBar,
+  categories,
 };
 
-export default translation;
+export default translations;

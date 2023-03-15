@@ -1,5 +1,5 @@
 <template>
-  <p>{{ $t("categories") }}</p>
+  <p>{{ $t("categories.category_name") }}</p>
 </template>
 
 <script setup></script>

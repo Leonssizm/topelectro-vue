@@ -3,8 +3,8 @@
     <thead>
       <tr>
         <th class="text-left">ID</th>
-        <th class="text-left">Category Name</th>
-        <th class="text-left">Description</th>
+        <th class="text-left">{{ $t("categories.category_name") }}</th>
+        <th class="text-left">{{ $t("categories.description") }}</th>
       </tr>
     </thead>
     <tbody>

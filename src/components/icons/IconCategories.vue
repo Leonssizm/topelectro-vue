@@ -18,7 +18,7 @@
       d="M6 6h.008v.008H6V6z"
     />
   </svg>
-  <span>{{ $t(props.title) }}</span>
+  <span>{{ $t(`navBar.${props.title}`) }}</span>
 </template>
 <script setup>
 const props = defineProps(["title"]);

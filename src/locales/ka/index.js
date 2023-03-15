@@ -1,7 +1,9 @@
-import ka from "./ka.json";
+import navBar from "./navBar.json";
+import categories from "./categories.json";
 
-const translation = {
-  ka,
+const translations = {
+  navBar,
+  categories,
 };
 
-export default translation;
+export default translations;
