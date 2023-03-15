@@ -7,16 +7,16 @@
         </RouterLink>
         <div class="flex-row">
           <RouterLink to="/categories" class="flex space-x-3 px-3 pl-5">
-            <IconCategories title="Categories" />
+            <IconCategories title="categories" />
           </RouterLink>
           <RouterLink to="/products" class="flex space-x-4 px-3 pt-4 pl-5">
-            <IconProducts title="Products" />
+            <IconProducts title="products" />
           </RouterLink>
           <RouterLink to="/users" class="flex space-x-4 px-3 pt-4 pl-5">
-            <IconUsers title="Users" />
+            <IconUsers title="users" />
           </RouterLink>
           <RouterLink to="/comments" class="flex space-x-4 px-3 py-4 pl-5">
-            <IconComments title="Comments" />
+            <IconComments title="comments" />
           </RouterLink>
         </div>
       </div>
