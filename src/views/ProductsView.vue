@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="ml-16">
-      <ResourceHeader header="Products" />
+      <ResourceHeader header="products" />
       <!-- Table -->
       <div class="mt-6 box-border overflow-auto">
         <div class="flex flex-col">
