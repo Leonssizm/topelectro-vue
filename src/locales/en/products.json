@@ -1,0 +1,11 @@
+{
+    "name": "name",
+    "price": "price",
+    "wholesale_price": "wholesale_price",
+    "image": "image",
+    "categories": "categories",
+    "details": "details",
+    "edit": "edit",
+    "delete": "delete",
+    "amount": "total of {count} products"
+}

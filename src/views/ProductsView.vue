@@ -7,7 +7,7 @@
         <div class="flex flex-col">
           <div class="overflow-x-auto">
             <div class="mt-3 border-indigo-500 py-3 pl-5 hover:border-l-4">
-              <p>Total of {{ store.getQuantity }} Products</p>
+              <p>{{ $tc("products.amount", store.getQuantity) }}</p>
             </div>
             <div class="flex justify-between py-3 pl-2">
               <SearchInput />

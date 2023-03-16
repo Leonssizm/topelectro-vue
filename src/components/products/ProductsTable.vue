@@ -4,14 +4,14 @@
       <tr>
         <th class="text-left">ID</th>
         <th class="text-left">SQ</th>
-        <th class="text-left">Name</th>
-        <th class="text-left">Price</th>
-        <th class="text-left">Wholesale Price</th>
-        <th class="text-left">Image</th>
-        <th class="text-left">Categories</th>
-        <th class="text-left">Details</th>
-        <th class="text-left">Edit</th>
-        <th class="text-left">Delete</th>
+        <th class="text-left">{{ $t("products.name") }}</th>
+        <th class="text-left">{{ $t("products.price") }}</th>
+        <th class="text-left">{{ $t("products.wholesale_price") }}</th>
+        <th class="text-left">{{ $t("products.image") }}</th>
+        <th class="text-left">{{ $t("products.categories") }}</th>
+        <th class="text-left">{{ $t("products.details") }}</th>
+        <th class="text-left">{{ $t("products.edit") }}</th>
+        <th class="text-left">{{ $t("products.delete") }}</th>
       </tr>
     </thead>
     <tbody>
