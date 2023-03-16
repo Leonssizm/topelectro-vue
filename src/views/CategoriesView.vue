@@ -3,7 +3,7 @@
     <ResourceHeader header="categories" />
     <div class="flex-col">
       <div class="mt-3 border-indigo-500 py-3 pl-5 hover:border-l-4">
-        <p>Total of {{ store.getQuantity }} Categories</p>
+        <p>{{ $tc("categories.amount", store.getQuantity) }}</p>
       </div>
       <div class="flex justify-between py-3 pl-2">
         <SearchInput />
